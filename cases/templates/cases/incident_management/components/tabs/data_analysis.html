@@ -1,0 +1,240 @@
+<div class="tab-pane fade" id="data-analysis" role="tabpanel" aria-labelledby="data-analysis-tab">
+    <div class="card shadow-sm">
+        <div class="card-header bg-light">
+            <h2 class="card-title h5 mb-0">数据分析</h2>
+        </div>
+        <div class="card-body">
+            <!-- 筛选条件 -->
+            <form id="analysisForm" class="mb-4">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label for="analysisIncidentType" class="form-label">类型</label>
+                        <select class="form-select" id="analysisIncidentType" onchange="handleAnalysisTypeChange()">
+                            <option value="">全部类型</option>
+                            <option value="accident">事故</option>
+                            <option value="case">案件</option>
+                            <option value="suicide">自杀</option>
+                            <option value="hazard">问题隐患</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6" id="analysisAccidentSubTypeDiv" style="display: none;">
+                        <label for="analysisAccidentSubType" class="form-label">事故类型</label>
+                        <select class="form-select" id="analysisAccidentSubType">
+                            <option value="">全部</option>
+                            <option value="military">军队事故</option>
+                            <option value="social">社会事故</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="analysisStartDate" class="form-label">开始时间</label>
+                        <input type="date" class="form-control" id="analysisStartDate">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="analysisEndDate" class="form-label">结束时间</label>
+                        <input type="date" class="form-control" id="analysisEndDate">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="analysisUnit" class="form-label">单位</label>
+                        <input type="text" class="form-control" id="analysisUnit" placeholder="请输入单位名称">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="analysisReason" class="form-label">原因分析</label>
+                        <select class="form-select" id="analysisReason">
+                            <option value="">全部原因</option>
+                            <option value="人">人因</option>
+                            <option value="物">物因</option>
+                            <option value="环">环境原因</option>
+                            <option value="管">管理原因</option>
+                            <option value="任">责任原因</option>
+                        </select>
+                    </div>
+                    
+                    <!-- 问题隐患分析条件 -->
+                    <div class="row g-3" id="analysisHazardConditions" style="display: none;">
+                        <div class="col-md-6">
+                            <label for="analysisHazardType" class="form-label">检查类型</label>
+                            <select class="form-select" id="analysisHazardType">
+                                <option value="">全部</option>
+                                <option value="chief">首长检查</option>
+                                <option value="daily">日常检查</option>
+                                <option value="comprehensive">综合检查</option>
+                                <option value="other">其他</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="analysisProblemCategory" class="form-label">问题类别</label>
+                            <div id="analysisProblemCategoryContainer"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- 其他类型分析条件 -->
+                    <div class="row g-3" id="analysisOtherConditions" style="display: none;">
+                        <div class="col-md-6">
+                            <label for="analysisOtherProblemCategory" class="form-label">问题类别</label>
+                            <div id="analysisOtherProblemCategoryContainer"></div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="analysisProblemLevel" class="form-label">问题等级</label>
+                            <div id="analysisProblemLevelContainer"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary me-2">
+                            <i class="bi bi-graph-up me-1"></i>开始分析
+                        </button>
+                        <button type="reset" class="btn btn-secondary me-2">
+                            <i class="bi bi-arrow-clockwise me-1"></i>重置
+                        </button>
+                        <button type="button" class="btn btn-success" onclick="exportAnalysisPDF()">
+                            <i class="bi bi-file-earmark-pdf me-1"></i>导出PDF
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <!-- 分析结果 -->
+            <div id="analysisResults" style="display: none;">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h3 class="h6 mb-0">分析结果</h3>
+                    <span class="text-muted" id="analysisResultCount"></span>
+                </div>
+                
+                <!-- 图表容器 -->
+                <div class="row g-4 mb-4">
+                    <!-- 事故总量柱状图 -->
+                    <div class="col-12">
+                        <div class="card shadow-sm">
+                            <div class="card-header py-3">
+                                <h6 class="card-title mb-0">某某大单位事故总量</h6>
+                            </div>
+                            <div class="card-body py-3">
+                                <div id="accidentTotalChart" style="width: 100%; height: 300px;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 年分布折线图 -->
+                    <div class="col-12">
+                        <div class="card shadow-sm">
+                            <div class="card-header py-3">
+                                <h6 class="card-title mb-0">军队事故、案件、自杀问题数量分布图</h6>
+                            </div>
+                            <div class="card-body py-3">
+                                <div id="yearDistributionChart" style="width: 100%; height: 350px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 饼状图区域 -->
+                    <div class="col-lg-4 col-md-6">
+                        <div class="card shadow-sm h-100">
+                            <div class="card-header py-3">
+                                <h6 class="card-title mb-0">不同类型事故占比</h6>
+                            </div>
+                            <div class="card-body py-3">
+                                <div id="accidentTypePieChart" style="width: 100%; height: 280px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-4 col-md-6">
+                        <div class="card shadow-sm h-100">
+                            <div class="card-header py-3">
+                                <h6 class="card-title mb-0">安全问题致因占比</h6>
+                            </div>
+                            <div class="card-body py-3">
+                                <div id="safetyCausePieChart" style="width: 100%; height: 280px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-4 col-md-6">
+                        <div class="card shadow-sm h-100">
+                            <div class="card-header py-3">
+                                <h6 class="card-title mb-0">安全问题类型占比</h6>
+                            </div>
+                            <div class="card-body py-3">
+                                <div id="safetyTypePieChart" style="width: 100%; height: 280px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-4 col-md-6">
+                        <div class="card shadow-sm h-100">
+                            <div class="card-header py-3">
+                                <h6 class="card-title mb-0">人的不安全行为类型占比</h6>
+                            </div>
+                            <div class="card-body py-3">
+                                <div id="humanBehaviorPieChart" style="width: 100%; height: 280px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-4 col-md-6">
+                        <div class="card shadow-sm h-100">
+                            <div class="card-header py-3">
+                                <h6 class="card-title mb-0">物的不安全状态类型占比</h6>
+                            </div>
+                            <div class="card-body py-3">
+                                <div id="unsafeConditionPieChart" style="width: 100%; height: 280px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-4 col-md-6">
+                        <div class="card shadow-sm h-100">
+                            <div class="card-header py-3">
+                                <h6 class="card-title mb-0">环境的不良影响类型占比</h6>
+                            </div>
+                            <div class="card-body py-3">
+                                <div id="environmentalImpactPieChart" style="width: 100%; height: 280px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-4 col-md-6">
+                        <div class="card shadow-sm h-100">
+                            <div class="card-header py-3">
+                                <h6 class="card-title mb-0">管理上的不科学类型占比</h6>
+                            </div>
+                            <div class="card-body py-3">
+                                <div id="managementIssuePieChart" style="width: 100%; height: 280px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-4 col-md-6">
+                        <div class="card shadow-sm h-100">
+                            <div class="card-header py-3">
+                                <h6 class="card-title mb-0">任务安排不合理类型占比</h6>
+                            </div>
+                            <div class="card-body py-3">
+                                <div id="taskArrangementPieChart" style="width: 100%; height: 280px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- AI分析结果 -->
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            <i class="bi bi-robot me-2"></i>AI智能分析
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="aiAnalysisContent">
+                            <div class="text-center py-4">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">分析中...</span>
+                                </div>
+                                <p class="mt-2 text-muted">AI正在分析数据，请稍候...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

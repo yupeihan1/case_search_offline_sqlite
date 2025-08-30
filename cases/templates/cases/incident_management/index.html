@@ -1,0 +1,26 @@
+{% extends 'cases/incident_management/base.html' %}
+{% load static %}
+
+{% block content %}
+    <!-- 导航组件 -->
+    {% include 'cases/incident_management/components/navigation.html' %}
+
+    <!-- 功能选项卡 -->
+    {% include 'cases/incident_management/components/tabs.html' %}
+
+    <!-- 弹窗组件 -->
+    {% include 'cases/incident_management/components/modals/plan_modal.html' %}
+    {% include 'cases/incident_management/components/modals/detail_modal.html' %}
+    {% include 'cases/incident_management/components/modals/edit_modal.html' %}
+{% endblock %}
+
+{% block scripts %}
+    <!-- 部队问题管理模块的主要JavaScript -->
+    <script src="{% static 'js/incident_management/utils/helpers.js' %}"></script>
+    <script src="{% static 'js/incident_management/modules/data_entry.js' %}"></script>
+    <script src="{% static 'js/incident_management/modules/data_query.js' %}"></script>
+    <script src="{% static 'js/incident_management/modules/data_analysis.js' %}"></script>
+    <script src="{% static 'js/incident_management/modules/chart_manager.js' %}"></script>
+    <script src="{% static 'js/incident_management/modules/modal_manager.js' %}"></script>
+    <script src="{% static 'js/incident_management/main.js' %}"></script>
+{% endblock %}

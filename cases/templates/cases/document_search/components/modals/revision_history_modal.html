@@ -1,0 +1,42 @@
+<!-- 历史修订信息选择弹窗 -->
+<div class="modal fade" id="revisionHistoryModal" tabindex="-1" aria-labelledby="revisionHistoryModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="revisionHistoryModalLabel">选择历史修订文件</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="关闭"></button>
+            </div>
+            <div class="modal-body">
+                <!-- 搜索区域 -->
+                <div class="mb-3">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="revisionSearchInput" placeholder="输入文件名或关键词进行搜索">
+                        <button class="btn btn-primary" type="button" onclick="searchRevisionFiles()">
+                            <i class="bi bi-search"></i>搜索
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- 搜索结果 -->
+                <div class="mb-3">
+                    <h6>搜索结果</h6>
+                    <div id="revisionSearchResults" class="list-group revision-search-results">
+                        <!-- 搜索结果将在这里动态生成 -->
+                    </div>
+                </div>
+                
+                <!-- 已选文件 -->
+                <div class="mb-3">
+                    <h6>已选文件</h6>
+                    <div id="selectedRevisionFiles" class="list-group">
+                        <!-- 已选文件将在这里显示 -->
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" onclick="confirmRevisionSelection()">确认选择</button>
+            </div>
+        </div>
+    </div>
+</div>

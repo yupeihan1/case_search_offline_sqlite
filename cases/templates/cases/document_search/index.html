@@ -1,0 +1,34 @@
+{% extends 'cases/document_search/base.html' %}
+{% load static %}
+
+{% block content %}
+    <!-- 导航组件 -->
+    {% include 'cases/document_search/components/navigation.html' %}
+
+    <!-- 文档列表组件 -->
+    {% include 'cases/document_search/components/document_list.html' %}
+
+    <!-- 上传表单组件 -->
+    {% include 'cases/document_search/components/upload_form.html' %}
+
+    <!-- 搜索表单组件 -->
+    {% include 'cases/document_search/components/search_form.html' %}
+
+    <!-- 弹窗组件 -->
+    {% include 'cases/document_search/components/modals/revision_history_modal.html' %}
+    {% include 'cases/document_search/components/modals/update_document_modal.html' %}
+
+    <!-- 预览面板组件 -->
+    {% include 'cases/document_search/components/preview_panel.html' %}
+{% endblock %}
+
+{% block scripts %}
+    <!-- 文档搜索模块的主要JavaScript -->
+    <script src="{% static 'js/document_search/utils/helpers.js' %}"></script>
+    <script src="{% static 'js/document_search/modules/document_manager.js' %}"></script>
+    <script src="{% static 'js/document_search/modules/search_manager.js' %}"></script>
+    <script src="{% static 'js/document_search/modules/preview_manager.js' %}"></script>
+    <script src="{% static 'js/document_search/modules/modal_manager.js' %}"></script>
+    <script src="{% static 'js/document_search/modules/upload_manager.js' %}"></script>
+    <script src="{% static 'js/document_search/main.js' %}"></script>
+{% endblock %}

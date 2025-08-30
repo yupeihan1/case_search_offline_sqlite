@@ -1,0 +1,48 @@
+<div class="tab-pane fade show active" id="data-entry" role="tabpanel" aria-labelledby="data-entry-tab">
+    <div class="card shadow-sm">
+        <div class="card-header bg-light">
+            <h2 class="card-title h5 mb-0">数据录入</h2>
+        </div>
+        <div class="card-body">
+            <form role="form" aria-label="数据录入表单" id="dataEntryForm">
+                <!-- 类型选择 -->
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <label for="incidentType" class="form-label">事故类型 <span class="text-danger">*</span></label>
+                        <select class="form-select" id="incidentType" required onchange="handleTypeChange()">
+                            <option value="">请选择类型</option>
+                            <option value="accident">事故</option>
+                            <option value="case">案件</option>
+                            <option value="suicide">自杀</option>
+                            <option value="hazard">问题隐患</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6" id="accidentSubTypeDiv" style="display: none;">
+                        <label for="accidentSubType" class="form-label">事故类型 <span class="text-danger">*</span></label>
+                        <select class="form-select" id="accidentSubType" onchange="handleSubTypeChange()">
+                            <option value="">请选择事故类型</option>
+                            <option value="military">军队事故</option>
+                            <option value="social">社会事故</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- 问题隐患表单 -->
+                {% include 'cases/incident_management/components/forms/hazard_form.html' %}
+
+                <!-- 问题隐患以外表单 -->
+                {% include 'cases/incident_management/components/forms/other_form.html' %}
+
+                <!-- 提交按钮 -->
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-primary me-2">
+                        <i class="bi bi-check-circle me-1" aria-hidden="true"></i>保存数据
+                    </button>
+                    <button type="reset" class="btn btn-secondary">
+                        <i class="bi bi-arrow-clockwise me-1" aria-hidden="true"></i>重置表单
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

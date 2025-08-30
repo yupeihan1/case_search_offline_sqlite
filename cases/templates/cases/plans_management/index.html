@@ -1,0 +1,72 @@
+{% extends 'cases/plans_management/base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- 功能选项卡 -->
+<div class="row">
+    <div class="col-12">
+        <ul class="nav nav-tabs" id="planManagementTabs" role="tablist" aria-label="计划管理功能选项卡">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="plan-display-tab" data-bs-toggle="tab" data-bs-target="#plan-display" type="button" role="tab" aria-controls="plan-display" aria-selected="true">
+                    <i class="bi bi-calendar-check me-2" aria-hidden="true"></i>初期显示
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="plan-create-tab" data-bs-toggle="tab" data-bs-target="#plan-create" type="button" role="tab" aria-controls="plan-create" aria-selected="false">
+                    <i class="bi bi-plus-circle me-2" aria-hidden="true"></i>制定计划
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="unit-maintenance-tab" data-bs-toggle="tab" data-bs-target="#unit-maintenance" type="button" role="tab" aria-controls="unit-maintenance" aria-selected="false">
+                    <i class="bi bi-building me-2" aria-hidden="true"></i>受检单位信息维护
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="department-maintenance-tab" data-bs-toggle="tab" data-bs-target="#department-maintenance" type="button" role="tab" aria-controls="department-maintenance" aria-selected="false">
+                    <i class="bi bi-diagram-3 me-2" aria-hidden="true"></i>检查部门信息维护
+                </button>
+            </li>
+        </ul>
+        
+        <div class="tab-content mt-4" id="planManagementTabsContent">
+            <!-- 初期显示选项卡 -->
+            <div class="tab-pane fade show active" id="plan-display" role="tabpanel" aria-labelledby="plan-display-tab">
+                {% include 'cases/plans_management/components/tabs/plan_display.html' %}
+            </div>
+
+            <!-- 制定计划选项卡 -->
+            <div class="tab-pane fade" id="plan-create" role="tabpanel" aria-labelledby="plan-create-tab">
+                {% include 'cases/plans_management/components/tabs/plan_create.html' %}
+            </div>
+
+            <!-- 部队信息维护选项卡 -->
+            <div class="tab-pane fade" id="unit-maintenance" role="tabpanel" aria-labelledby="unit-maintenance-tab">
+                {% include 'cases/plans_management/components/tabs/unit_maintenance.html' %}
+            </div>
+
+            <!-- 检查部门信息维护选项卡 -->
+            <div class="tab-pane fade" id="department-maintenance" role="tabpanel" aria-labelledby="department-maintenance-tab">
+                {% include 'cases/plans_management/components/tabs/department_maintenance.html' %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 模态框组件 -->
+{% include 'cases/plans_management/components/modals/info_input_modal.html' %}
+{% include 'cases/plans_management/components/modals/unit_modal.html' %}
+{% include 'cases/plans_management/components/modals/department_modal.html' %}
+{% endblock %}
+
+{% block scripts %}
+<!-- 计划管理模块主JS -->
+<script src="{% static 'js/plans_management/main.js' %}"></script>
+<!-- 计划管理模块工具函数 -->
+<script src="{% static 'js/plans_management/utils/helpers.js' %}"></script>
+<!-- 计划管理模块各功能模块 -->
+<script src="{% static 'js/plans_management/modules/plan_display.js' %}"></script>
+<script src="{% static 'js/plans_management/modules/plan_create.js' %}"></script>
+<script src="{% static 'js/plans_management/modules/unit_maintenance.js' %}"></script>
+<script src="{% static 'js/plans_management/modules/department_maintenance.js' %}"></script>
+<script src="{% static 'js/plans_management/modules/modal_manager.js' %}"></script>
+{% endblock %}

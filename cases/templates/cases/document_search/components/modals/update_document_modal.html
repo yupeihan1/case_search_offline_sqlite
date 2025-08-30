@@ -1,0 +1,113 @@
+<!-- 文件信息更新弹窗 -->
+<div class="modal fade" id="updateDocumentModal" tabindex="-1" aria-labelledby="updateDocumentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateDocumentModalLabel">更新文件信息</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="关闭"></button>
+            </div>
+            <div class="modal-body">
+                <form id="updateDocumentForm">
+                    <div class="row g-3">
+                        <!-- 第一行：文件名-----发布时间 -->
+                        <div class="col-md-6">
+                            <label for="updateFileName" class="form-label">文件名</label>
+                            <input type="text" class="form-control" id="updateFileName" disabled>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="updatePublishDate" class="form-label">发布时间</label>
+                            <input type="date" class="form-control" id="updatePublishDate" disabled>
+                        </div>
+                        
+                        <!-- 第二行：密级与保密时间 -->
+                        <div class="col-12">
+                            <label class="form-label">密级与保密时间 <span class="text-danger">*</span></label>
+                            <div class="row g-2 security-combined">
+                                <div class="col-8">
+                                    <select class="form-select" id="updateSecurityLevel" name="securityLevel" required>
+                                        <option value="">请选择密级</option>
+                                        <!-- 密级选项将通过JavaScript动态生成 -->
+                                    </select>
+                                </div>
+                                <div class="col-4">
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="updateSecurityPeriod" name="securityPeriod" placeholder="年限" min="0" max="100">
+                                        <span class="input-group-text">年</span>
+                                        <button type="button" class="btn btn-outline-secondary" onclick="clearUpdateSecurityPeriod()" title="清除保密时间">
+                                            <i class="bi bi-x-circle"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-text">密级必选，保密时间可选，留空表示无保密期限</div>
+                        </div>
+                        
+                        <!-- 第三行：签发单位----效力状态 -->
+                        <div class="col-md-6">
+                            <label for="updateIssueUnit" class="form-label">签发单位 <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="updateIssueUnit" name="issueUnit" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="updateEffectStatus" class="form-label">效力状态 <span class="text-danger">*</span></label>
+                            <select class="form-select" id="updateEffectStatus" name="effectStatus" required>
+                                <option value="">请选择效力状态</option>
+                                <!-- 效力状态选项将通过JavaScript动态生成 -->
+                            </select>
+                        </div>
+                        
+                        <!-- 第四行：有效开始时间------有效终了时间 -->
+                        <div class="col-md-6">
+                            <label for="updateEffectiveStartDate" class="form-label">有效开始时间 <span class="text-danger">*</span></label>
+                            <input type="date" class="form-control" id="updateEffectiveStartDate" name="effectiveStartDate" required>
+                            <div class="form-text">可直接输入或点击日历图标选择日期</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="updateEffectiveEndDate" class="form-label">有效终了时间 <span class="text-danger">*</span></label>
+                            <input type="date" class="form-control" id="updateEffectiveEndDate" name="effectiveEndDate" required>
+                            <div class="form-text">可直接输入或点击日历图标选择日期</div>
+                        </div>
+                        
+                        <!-- 第五行：文件编号 -->
+                        <div class="col-12">
+                            <label for="updateFileNumber" class="form-label">文件编号</label>
+                            <input type="text" class="form-control" id="updateFileNumber" name="fileNumber">
+                        </div>
+                        
+                        <!-- 第六行：标签 -->
+                        <div class="col-12">
+                            <label for="updateTags" class="form-label">可选标签</label>
+                            <div id="updateTagsContainer">
+                                <!-- 更新表单标签组件将在这里生成 -->
+                            </div>
+                        </div>
+                        
+                        <!-- 历史修订信息 -->
+                        <div class="col-12">
+                            <label for="updateRevisionHistory" class="form-label">历史修订信息</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="updateRevisionHistory" name="revisionHistory" placeholder="请选择历史修订文件" readonly>
+                                <button class="btn btn-outline-secondary" type="button" onclick="openUpdateRevisionHistoryModal()">
+                                    <i class="bi bi-search me-1"></i>选择文件
+                                </button>
+                                <button class="btn btn-outline-danger" type="button" onclick="clearUpdateRevisionHistory()">
+                                    <i class="bi bi-x-circle"></i>
+                                </button>
+                            </div>
+                            <div class="form-text">点击"选择文件"按钮检索并选择历史修订文件</div>
+                        </div>
+                        
+                        <!-- 备注 -->
+                        <div class="col-12">
+                            <label for="updateRemarks" class="form-label">备注</label>
+                            <textarea class="form-control" id="updateRemarks" name="remarks" rows="3" placeholder="请输入备注信息"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" onclick="updateDocumentInfo()">保存更新</button>
+            </div>
+        </div>
+    </div>
+</div>

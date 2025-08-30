@@ -1,0 +1,418 @@
+/* 部队问题管理模块特定样式 */
+
+/* 页面特定样式 - 不覆盖site.css的body样式 */
+.incident-management-page .main-content {
+    padding-top: 100px; /* 为固定导航栏留出更多空间，避免被浏览器地址栏遮挡 */
+    flex: 1;
+    padding-bottom: 80px; /* 为固定页脚留出空间 */
+}
+
+/* 修复navbar被浏览器地址栏遮挡的问题 */
+.incident-management-page .navbar.fixed-top {
+    top: 0;
+    position: fixed;
+    right: 0;
+    left: 0;
+    z-index: 1030;
+    /* 增加一些顶部内边距，确保内容不被浏览器UI遮挡 */
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+/* 通用隐藏类 */
+.hidden {
+    display: none !important;
+}
+
+/* 原因分析标签样式 */
+.reason-stamp {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-align: center;
+    min-width: 40px;
+    color: white;
+}
+
+.reason-person {
+    background-color: #dc3545; /* 红色 - 人因 */
+}
+
+.reason-object {
+    background-color: #fd7e14; /* 橙色 - 物因 */
+}
+
+.reason-environment {
+    background-color: #20c997; /* 绿色 - 环境原因 */
+}
+
+.reason-management {
+    background-color: #6f42c1; /* 紫色 - 管理原因 */
+}
+
+.reason-responsibility {
+    background-color: #e83e8c; /* 粉色 - 责任原因 */
+}
+
+/* 表单样式增强 */
+.form-label {
+    font-weight: 500;
+    color: #495057;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+/* 卡片样式增强 */
+.card {
+    border: none;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    transition: box-shadow 0.15s ease-in-out;
+}
+
+.card:hover {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+    font-weight: 600;
+}
+
+/* 按钮样式增强 */
+.btn {
+    font-weight: 500;
+    border-radius: 0.375rem;
+    transition: all 0.15s ease-in-out;
+}
+
+.btn-primary {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+.btn-primary:hover {
+    background-color: #0b5ed7;
+    border-color: #0a58ca;
+}
+
+.btn-outline-primary {
+    color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+.btn-outline-primary:hover {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+/* 表格样式增强 */
+.table {
+    margin-bottom: 0;
+}
+
+.table th {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #dee2e6;
+    font-weight: 600;
+    color: #495057;
+}
+
+.table td {
+    vertical-align: middle;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.075);
+}
+
+/* 分页器样式 */
+.pagination {
+    margin-bottom: 0;
+}
+
+.page-link {
+    color: #0d6efd;
+    border: 1px solid #dee2e6;
+    padding: 0.375rem 0.75rem;
+}
+
+.page-link:hover {
+    color: #0a58ca;
+    background-color: #e9ecef;
+    border-color: #dee2e6;
+}
+
+.page-item.active .page-link {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+/* 标签下拉组件样式增强 */
+.tags-dropdown {
+    position: relative;
+}
+
+.tags-dropdown .dropdown-toggle {
+    width: 100%;
+    text-align: left;
+    background-color: #fff;
+    border: 1px solid #ced4da;
+    border-radius: 0.375rem;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #495057;
+}
+
+.tags-dropdown .dropdown-toggle:hover {
+    border-color: #86b7fe;
+}
+
+.tags-dropdown .dropdown-toggle:focus {
+    border-color: #86b7fe;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+.tags-dropdown .dropdown-menu {
+    width: 100%;
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #dee2e6;
+    border-radius: 0.375rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.tags-dropdown .dropdown-item {
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid #f8f9fa;
+}
+
+.tags-dropdown .dropdown-item:hover {
+    background-color: #f8f9fa;
+}
+
+.tags-dropdown .dropdown-item.selected {
+    background-color: #e3f2fd;
+    color: #1976d2;
+}
+
+/* 选中的标签显示 */
+.selected-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    margin-top: 0.5rem;
+}
+
+.selected-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.5rem;
+    background-color: #e3f2fd;
+    color: #1976d2;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+    border: 1px solid #bbdefb;
+}
+
+.selected-tag .remove-tag {
+    margin-left: 0.5rem;
+    cursor: pointer;
+    color: #1976d2;
+    font-weight: bold;
+}
+
+.selected-tag .remove-tag:hover {
+    color: #d32f2f;
+}
+
+/* 文件上传样式 */
+.file-upload-area {
+    border: 2px dashed #dee2e6;
+    border-radius: 0.5rem;
+    padding: 2rem;
+    text-align: center;
+    background-color: #f8f9fa;
+    transition: all 0.15s ease-in-out;
+}
+
+.file-upload-area:hover {
+    border-color: #0d6efd;
+    background-color: #f0f8ff;
+}
+
+.file-upload-area.dragover {
+    border-color: #0d6efd;
+    background-color: #e3f2fd;
+}
+
+/* 进度条样式 */
+.progress {
+    height: 0.5rem;
+    border-radius: 0.25rem;
+    background-color: #e9ecef;
+}
+
+.progress-bar {
+    background-color: #0d6efd;
+    border-radius: 0.25rem;
+}
+
+/* 图表容器样式 */
+.chart-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+/* 分析结果样式 */
+.analysis-content h6 {
+    color: #495057;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    margin-top: 1.5rem;
+}
+
+.analysis-content h6:first-child {
+    margin-top: 0;
+}
+
+.analysis-content ul {
+    padding-left: 1.25rem;
+}
+
+.analysis-content li {
+    margin-bottom: 0.5rem;
+    color: #6c757d;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .incident-management-page .main-content {
+        padding-top: 120px; /* 移动设备上可能需要更多空间 */
+    }
+    
+    .card-body {
+        padding: 1rem;
+    }
+    
+    .table-responsive {
+        font-size: 0.875rem;
+    }
+    
+    .btn-group-sm .btn {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.75rem;
+    }
+}
+
+/* 针对Safari浏览器的特殊处理 */
+@supports (-webkit-touch-callout: none) {
+    .incident-management-page .navbar.fixed-top {
+        /* Safari中可能需要额外的顶部空间 */
+        padding-top: 1rem;
+    }
+    
+    .incident-management-page .main-content {
+        padding-top: 110px;
+    }
+}
+
+/* 动画效果 */
+.fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 加载状态 */
+.loading {
+    position: relative;
+    pointer-events: none;
+}
+
+.loading::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+/* 工具提示样式 */
+.tooltip {
+    font-size: 0.875rem;
+}
+
+.tooltip-inner {
+    background-color: #212529;
+    border-radius: 0.25rem;
+    padding: 0.5rem 0.75rem;
+}
+
+/* 模态框样式增强 */
+.modal-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.modal-footer {
+    background-color: #f8f9fa;
+    border-top: 1px solid #dee2e6;
+}
+
+.modal-title {
+    font-weight: 600;
+    color: #495057;
+}
+
+/* 表单验证样式 */
+.form-control.is-invalid,
+.form-select.is-invalid {
+    border-color: #dc3545;
+    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+}
+
+.invalid-feedback {
+    display: block;
+    color: #dc3545;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+/* 成功状态样式 */
+.form-control.is-valid,
+.form-select.is-valid {
+    border-color: #198754;
+    box-shadow: 0 0 0 0.2rem rgba(25, 135, 84, 0.25);
+}
+
+.valid-feedback {
+    display: block;
+    color: #198754;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}

@@ -1,0 +1,55 @@
+<!-- 部门信息编辑模态框 -->
+<div class="modal fade" id="departmentModal" tabindex="-1" aria-labelledby="departmentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="departmentModalLabel">部门信息</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="departmentForm">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="departmentName" class="form-label">部门名称 <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="departmentName" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="departmentLevel" class="form-label">级别 <span class="text-danger">*</span></label>
+                            <select class="form-control" id="departmentLevel" required>
+                                <option value="部">部</option>
+                                <option value="处">处</option>
+                                <option value="科">科</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="parentDepartment" class="form-label">上级部门</label>
+                            <select class="form-control" id="parentDepartment">
+                                <option value="">无上级部门</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="departmentCode" class="form-label">部门代码</label>
+                            <input type="text" class="form-control" id="departmentCode" placeholder="请输入部门代码">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="departmentLeader" class="form-label">部门负责人</label>
+                            <input type="text" class="form-control" id="departmentLeader" placeholder="请输入部门负责人">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="departmentPhone" class="form-label">联系电话</label>
+                            <input type="text" class="form-control" id="departmentPhone" placeholder="请输入联系电话">
+                        </div>
+                        <div class="col-12">
+                            <label for="departmentDescription" class="form-label">部门描述</label>
+                            <textarea class="form-control" id="departmentDescription" rows="3" placeholder="请输入部门描述"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" onclick="saveDepartment()">保存</button>
+            </div>
+        </div>
+    </div>
+</div>

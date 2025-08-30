@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>安管之窗 - 导航</title>
+    {% load static %}
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/bootstrap-icons.css' %}" rel="stylesheet">
+    <link href="{% static 'css/site.css' %}?v=3.2" rel="stylesheet">
+    <style>
+        /* 页面特定样式 - 不覆盖site.css的全局样式 */
+        .main-content {
+            padding-top: 80px; /* 为固定导航栏留出空间 */
+            flex: 1;
+            padding-bottom: 80px; /* 为固定页脚留出空间 */
+        }
+        .navbar {
+            z-index: 1030; /* 确保导航栏在最上层 */
+        }
+        .offcanvas {
+            z-index: 1050; /* 确保侧边栏在最上层 */
+        }
+        .container-fluid {
+            padding: 0;
+            margin: 0;
+            max-width: none;
+            width: 100vw;
+        }
+        .row {
+            margin: 0;
+            width: 100%;
+        }
+        .col-12 {
+            padding: 0;
+            margin: 0;
+        }
+        .card-body {
+            padding: 3rem 2rem;
+            width: 100%;
+        }
+        .module-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-radius: 15px;
+            height: 100%;
+            margin: 0;
+        }
+        .module-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        .card-header {
+            border-radius: 0 !important;
+            padding: 2rem;
+            margin: 0;
+        }
+        .col-xl-4, .col-lg-6, .col-md-6 {
+            padding: 1rem;
+        }
+        .card-footer {
+            border-radius: 0 !important;
+            margin: 0;
+        }
+        .modules-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+            align-items: stretch;
+            width: 100%;
+            padding: 0 2rem;
+        }
+        .module-item {
+            flex: 1;
+            min-width: 300px;
+            max-width: 400px;
+        }
+        /* 确保sidebar链接可点击 */
+        .sidebar-link {
+            cursor: pointer;
+            pointer-events: auto;
+        }
+        .offcanvas-body {
+            pointer-events: auto;
+        }
+
+        @media (max-width: 768px) {
+            .modules-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            .module-item {
+                width: 100%;
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <!-- 顶部导航栏 -->
+    {% include 'cases/common/header.html' %}
+
+    {% include 'cases/common/sidebar.html' %}
+
+    <!-- 主体内容区 -->
+    <main class="main-content page-main" role="main">
+        <div class="main-card">
+                    <div class="card-body">
+                        <div class="modules-container">
+                            <div class="module-item">
+                                <div class="card h-100 border-0 shadow-sm module-card">
+                                    <div class="card-body text-center">
+                                        <i class="bi bi-database display-4 text-primary mb-3"></i>
+                                        <h5 class="card-title">部队问题管理模块</h5>
+                                        <p class="card-text text-muted">问题录入、查询、分析、预测、可视化展示、文件上传与维护</p>
+                                        <a href="{% url 'incident_management' %}" class="btn btn-primary">
+                                            <i class="bi bi-arrow-right me-1"></i>进入模块
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="module-item">
+                                <div class="card h-100 border-0 shadow-sm module-card">
+                                    <div class="card-body text-center">
+                                        <i class="bi bi-calendar-check display-4 text-success mb-3"></i>
+                                        <h5 class="card-title">计划管理模块</h5>
+                                        <p class="card-text text-muted">问题录入、指定计划、录入问题、自动生成计划、可导出计划、执行率计算</p>
+                                        <a href="{% url 'plans_management' %}" class="btn btn-success">
+                                            <i class="bi bi-arrow-right me-1"></i>进入模块
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="module-item">
+                                <div class="card h-100 border-0 shadow-sm module-card">
+                                    <div class="card-body text-center">
+                                        <i class="bi bi-search display-4 text-info mb-3"></i>
+                                        <h5 class="card-title">全文检索模块</h5>
+                                        <p class="card-text text-muted">快速搜索和查找系统中的各类信息</p>
+                                        <a href="{% url 'document_search' %}" class="btn btn-info text-white">
+                                            <i class="bi bi-arrow-right me-1"></i>进入模块
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 全局统一 Footer -->
+    {% include 'cases/common/footer.html' %}
+
+    <!-- Bootstrap 5 JS -->
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <!-- 侧边栏JS -->
+    <script src="{% static 'js/sidebar.js' %}"></script>
+    
+    <script>
+        // 显示当前时间
+        function updateTime() {
+            const now = new Date();
+            const timeString = now.toLocaleString('zh-CN', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            document.getElementById('currentTime').textContent = timeString;
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            updateTime();
+            setInterval(updateTime, 1000);
+        });
+    </script>
+</body>
+</html>

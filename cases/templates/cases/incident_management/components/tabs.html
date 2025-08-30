@@ -1,0 +1,32 @@
+<div class="row">
+    <div class="col-12">
+        <ul class="nav nav-tabs" id="dataManagementTabs" role="tablist" aria-label="数据管理功能选项卡">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="data-entry-tab" data-bs-toggle="tab" data-bs-target="#data-entry" type="button" role="tab" aria-controls="data-entry" aria-selected="true">
+                    <i class="bi bi-pencil-square me-2" aria-hidden="true"></i>数据录入
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="data-query-tab" data-bs-toggle="tab" data-bs-target="#data-query" type="button" role="tab" aria-controls="data-query" aria-selected="false">
+                    <i class="bi bi-search me-2" aria-hidden="true"></i>数据查询
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="data-analysis-tab" data-bs-toggle="tab" data-bs-target="#data-analysis" type="button" role="tab" aria-controls="data-analysis" aria-selected="false">
+                    <i class="bi bi-graph-up me-2" aria-hidden="true"></i>数据分析
+                </button>
+            </li>
+        </ul>
+
+        <div class="tab-content mt-4" id="dataManagementTabsContent">
+            <!-- 数据录入选项卡 -->
+            {% include 'cases/incident_management/components/tabs/data_entry.html' %}
+
+            <!-- 数据查询选项卡 -->
+            {% include 'cases/incident_management/components/tabs/data_query.html' %}
+
+            <!-- 数据分析选项卡 -->
+            {% include 'cases/incident_management/components/tabs/data_analysis.html' %}
+        </div>
+    </div>
+</div>

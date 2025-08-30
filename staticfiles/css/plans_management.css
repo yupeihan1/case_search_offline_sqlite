@@ -1,0 +1,685 @@
+/* 页面特定样式 */
+.main-content {
+    padding-top: 80px;
+    padding-bottom: 80px;
+}
+
+.navbar {
+    z-index: 1030;
+}
+
+.offcanvas {
+    z-index: 1050;
+}
+
+.sidebar-link {
+    cursor: pointer;
+    pointer-events: auto;
+}
+
+.offcanvas-body {
+    pointer-events: auto;
+}
+
+/* 计划管理特定样式 */
+.plan-item {
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
+}
+
+.plan-item:hover {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.plan-item.urgent {
+    border-color: #dc3545;
+    background-color: #fff5f5;
+    font-weight: bold;
+}
+
+.plan-item.urgent .text-danger {
+    color: #dc3545 !important;
+}
+
+.plan-item.completed {
+    border-color: #28a745;
+    background-color: #f8fff9;
+}
+
+.filter-section {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.custom-tag-input {
+    border: none;
+    box-shadow: none;
+}
+
+.custom-tag-input:focus {
+    border: none;
+    box-shadow: none;
+}
+
+/* 标签预览样式 */
+.badge {
+    display: inline-block;
+    padding: 0.35em 0.65em;
+    font-size: 0.75em;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 0.375rem;
+}
+
+.bg-primary {
+    background-color: #0d6efd !important;
+}
+
+.text-decoration-line-through {
+    text-decoration: line-through !important;
+}
+
+/* 制定计划页面样式 */
+.plan-form-section {
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.plan-form-section h5 {
+    color: #495057;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 10px;
+}
+
+.generated-plan-item {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
+}
+
+.generated-plan-item:hover {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border-color: #007bff;
+}
+
+.generated-plan-item label {
+    font-weight: 600;
+    color: #495057;
+    font-size: 0.875rem;
+}
+
+.generated-plan-item input[readonly] {
+    background-color: #e9ecef;
+    border-color: #ced4da;
+    color: #495057;
+}
+
+.generated-plan-item input:not([readonly]) {
+    background-color: #fff;
+    border-color: #007bff;
+    color: #212529;
+}
+
+.generated-plan-item input:not([readonly]):focus {
+    border-color: #0056b3;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.editable-field {
+    position: relative;
+}
+
+.editable-field::after {
+    content: "✏️";
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 12px;
+    opacity: 0.6;
+}
+
+/* 制定计划页面标签下拉组件样式 */
+.plan-org-unit-container,
+.plan-basic-units-container {
+    min-height: 38px;
+}
+
+/* 部队信息维护样式 */
+.unit-tree-item {
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 8px;
+    transition: all 0.3s ease;
+    background-color: #fff;
+    position: relative;
+    margin-left: 0;
+}
+
+.unit-tree-item:hover {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.unit-tree-item.base-item {
+    border-left: 4px solid #dc3545;
+    background-color: #fff5f5;
+}
+
+.unit-tree-item.org-item {
+    border-left: 4px solid #fd7e14;
+    background-color: #fff8f0;
+}
+
+.unit-tree-item.basic-item {
+    border-left: 4px solid #28a745;
+    background-color: #f8fff9;
+}
+
+.unit-tree-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: flex-start;
+}
+
+.unit-tree-toggle {
+    cursor: pointer;
+    color: #007bff;
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+    user-select: none;
+    margin-right: 10px;
+    flex-shrink: 0;
+}
+
+.unit-tree-toggle.collapsed {
+    transform: rotate(-90deg);
+}
+
+.unit-tree-toggle:hover {
+    color: #0056b3;
+}
+
+.unit-tree-children {
+    margin-left: 20px;
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.unit-tree-children.collapsed {
+    max-height: 0;
+    margin-left: 20px;
+    opacity: 0;
+    padding: 0;
+}
+
+.unit-tree-children {
+    margin-left: 20px;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    max-height: 2000px;
+    opacity: 1;
+}
+
+.unit-tree-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.unit-name {
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 5px;
+    font-size: 1.1rem;
+}
+
+.unit-meta {
+    font-size: 0.875rem;
+    color: #6c757d;
+}
+
+.unit-meta i {
+    color: #007bff;
+}
+
+.unit-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.check-count {
+    background-color: #e9ecef;
+    border-radius: 20px;
+    padding: 5px 12px;
+    font-size: 0.875rem;
+    color: #495057;
+    cursor: help;
+    position: relative;
+    transition: all 0.3s ease;
+    border: 1px solid #dee2e6;
+}
+
+.check-count:hover {
+    background-color: #007bff;
+    color: #fff;
+    border-color: #007bff;
+}
+
+.check-count:hover i {
+    color: #fff;
+}
+
+.check-tooltip {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #212529;
+    color: #fff;
+    padding: 12px 16px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    white-space: normal;
+    z-index: 1000;
+    display: none;
+    margin-top: 8px;
+    min-width: 250px;
+    max-width: 350px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    line-height: 1.4;
+}
+
+.check-count:hover .check-tooltip {
+    display: block;
+}
+
+.check-tooltip::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    right: 10px;
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 5px solid #212529;
+}
+
+/* 单位级别标识 */
+.unit-level-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-left: 8px;
+}
+
+.unit-level-badge.base {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.unit-level-badge.org {
+    background-color: #fd7e14;
+    color: #fff;
+}
+
+.unit-level-badge.basic {
+    background-color: #28a745;
+    color: #fff;
+}
+
+/* 标签样式优化 */
+.badge {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+}
+
+.badge.bg-secondary {
+    background-color: #6c757d !important;
+}
+
+/* 执行率统计样式 */
+.execution-rate-stats .card {
+    border: 1px solid #dee2e6;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.execution-rate-stats .card-header {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-bottom: 1px solid #dee2e6;
+}
+
+.execution-rate-stats .h4 {
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.execution-rate-stats .text-success {
+    color: #198754 !important;
+}
+
+.execution-rate-stats .text-warning {
+    color: #fd7e14 !important;
+}
+
+.execution-rate-stats .text-danger {
+    color: #dc3545 !important;
+}
+
+/* 响应式优化 */
+@media (max-width: 768px) {
+    .unit-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .unit-actions {
+        width: 100%;
+        justify-content: flex-end;
+    }
+    
+    .check-tooltip {
+        right: -50px;
+        min-width: 200px;
+    }
+    
+    .execution-rate-stats .row > div {
+        margin-bottom: 1rem;
+    }
+}
+
+/* 自定义确认对话框样式 - 模拟浏览器原生confirm */
+#stopPlanConfirmModal .modal-dialog {
+    max-width: 400px;
+    margin: 1.75rem auto;
+}
+
+#stopPlanConfirmModal .modal-content {
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+#stopPlanConfirmModal .modal-header {
+    border-bottom: 1px solid #e5e7eb;
+    padding: 16px 20px;
+    background-color: #f9fafb;
+    border-radius: 8px 8px 0 0;
+}
+
+#stopPlanConfirmModal .modal-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #374151;
+    margin: 0;
+}
+
+#stopPlanConfirmModal .modal-body {
+    padding: 20px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #374151;
+}
+
+#stopPlanConfirmModal .modal-footer {
+    border-top: 1px solid #e5e7eb;
+    padding: 16px 20px;
+    background-color: #f9fafb;
+    border-radius: 0 0 8px 8px;
+    gap: 8px;
+}
+
+#stopPlanConfirmModal .btn {
+    padding: 8px 16px;
+    font-size: 14px;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+#stopPlanConfirmModal .btn-secondary {
+    background-color: #ffffff;
+    border-color: #d1d5db;
+    color: #374151;
+}
+
+#stopPlanConfirmModal .btn-secondary:hover {
+    background-color: #f9fafb;
+    border-color: #9ca3af;
+}
+
+#stopPlanConfirmModal .btn-primary {
+    background-color: #3b82f6;
+    border-color: #3b82f6;
+    color: #ffffff;
+}
+
+#stopPlanConfirmModal .btn-primary:hover {
+    background-color: #2563eb;
+    border-color: #2563eb;
+}
+
+#stopPlanConfirmModal .btn-close {
+    padding: 0;
+    background: transparent;
+    border: 0;
+    font-size: 18px;
+    color: #6b7280;
+    cursor: pointer;
+}
+
+#stopPlanConfirmModal .btn-close:hover {
+    color: #374151;
+}
+
+/* 确保模态框正确显示和交互 */
+#stopPlanConfirmModal {
+    z-index: 1055 !important;
+}
+
+#stopPlanConfirmModal .modal-backdrop {
+    z-index: 1054 !important;
+}
+
+#stopPlanConfirmModal .modal-content {
+    pointer-events: auto;
+}
+
+#stopPlanConfirmModal .btn {
+    pointer-events: auto;
+    cursor: pointer;
+}
+
+/* ==================== 部门管理样式 ==================== */
+
+/* 部门树形结构样式 */
+.department-tree-item {
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    transition: all 0.3s ease;
+}
+
+.department-tree-item:hover {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.department-tree-item.dept-item-bu {
+    border-left: 4px solid #dc3545;
+    background-color: #fff5f5;
+}
+
+.department-tree-item.dept-item-chu {
+    border-left: 4px solid #fd7e14;
+    background-color: #fff8f0;
+    margin-left: 20px;
+}
+
+.department-tree-item.dept-item-ke {
+    border-left: 4px solid #28a745;
+    background-color: #f8fff9;
+    margin-left: 40px;
+}
+
+.department-tree-content {
+    display: flex;
+    align-items: flex-start;
+    padding: 15px;
+    gap: 10px;
+}
+
+.department-tree-info {
+    flex: 1;
+}
+
+.department-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #212529;
+}
+
+.department-meta {
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+.department-description {
+    margin-bottom: 8px;
+}
+
+.department-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.department-tree-toggle {
+    cursor: pointer;
+    color: #6c757d;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+    margin-top: 2px;
+}
+
+.department-tree-toggle:hover {
+    color: #495057;
+}
+
+.department-tree-toggle.collapsed {
+    transform: rotate(-90deg);
+}
+
+.department-tree-children {
+    margin-left: 20px;
+    transition: all 0.3s ease;
+}
+
+.department-tree-children.collapsed {
+    display: none;
+}
+
+/* 部门级别标识 */
+.dept-level-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-left: 8px;
+}
+
+.dept-level-badge.dept-level-bu {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.dept-level-badge.dept-level-chu {
+    background-color: #fd7e14;
+    color: #fff;
+}
+
+.dept-level-badge.dept-level-ke {
+    background-color: #28a745;
+    color: #fff;
+}
+
+/* 部门模态框样式 */
+#departmentModal .modal-content {
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+#departmentModal .modal-header {
+    border-bottom: 1px solid #e5e7eb;
+    padding: 16px 20px;
+    background-color: #f9fafb;
+    border-radius: 8px 8px 0 0;
+}
+
+#departmentModal .modal-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #374151;
+    margin: 0;
+}
+
+#departmentModal .modal-body {
+    padding: 20px;
+}
+
+#departmentModal .modal-footer {
+    border-top: 1px solid #e5e7eb;
+    padding: 16px 20px;
+    background-color: #f9fafb;
+    border-radius: 0 0 8px 8px;
+}
+
+/* 响应式优化 */
+@media (max-width: 768px) {
+    .department-tree-content {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .department-actions {
+        width: 100%;
+        justify-content: flex-end;
+        margin-top: 10px;
+    }
+    
+    .department-tree-children {
+        margin-left: 10px;
+    }
+    
+    .department-tree-item.dept-item-chu {
+        margin-left: 10px;
+    }
+    
+    .department-tree-item.dept-item-ke {
+        margin-left: 20px;
+    }
+}

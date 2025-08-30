@@ -1,0 +1,51 @@
+<div class="plan-form-section">
+    <h5 class="mb-3">制定检查计划</h5>
+    
+    <div class="row mb-3">
+        <div class="col-12">
+            <div class="btn-group" role="group" aria-label="检查类型选择">
+                <input type="radio" class="btn-check" name="createCheckType" id="createLeaderCheck" value="leader" checked>
+                <label class="btn btn-outline-primary" for="createLeaderCheck">首长检查</label>
+                
+                <input type="radio" class="btn-check" name="createCheckType" id="createDailyCheck" value="daily">
+                <label class="btn btn-outline-primary" for="createDailyCheck">日常检查</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-3">
+        <div class="col-md-6">
+            <label for="startDate" class="form-label">开始时间 <span class="text-danger">*</span></label>
+            <input type="date" class="form-control" id="startDate" required>
+        </div>
+        <div class="col-md-6">
+            <label for="rounds" class="form-label">轮次 <span class="text-danger">*</span></label>
+            <input type="number" class="form-control" id="rounds" min="1" max="52" required>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <button type="button" class="btn btn-primary" onclick="generatePlans()">
+            <i class="bi bi-gear me-1" aria-hidden="true"></i>生成计划
+        </button>
+    </div>
+</div>
+
+<!-- 生成的计划列表 -->
+<div id="generatedPlans" style="display: none;">
+    <h5 class="mb-3">生成的计划</h5>
+    <div class="alert alert-info mb-3">
+        <i class="bi bi-info-circle me-2"></i>
+        <strong>提示：</strong>除了时间段外，其他字段可以手动编辑。机关单位和基层单位支持多选，请根据需要调整计划内容，然后点击"确认计划"保存。
+    </div>
+    <div id="plansList"></div>
+    
+    <div class="mt-4">
+        <button type="button" class="btn btn-success" onclick="confirmPlans()">
+            <i class="bi bi-check-circle me-1" aria-hidden="true"></i>确认计划
+        </button>
+        <button type="button" class="btn btn-secondary ms-2" onclick="resetPlans()">
+            <i class="bi bi-arrow-clockwise me-1" aria-hidden="true"></i>重新生成
+        </button>
+    </div>
+</div>

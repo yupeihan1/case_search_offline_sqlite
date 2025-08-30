@@ -1,0 +1,295 @@
+/* 页面特定样式 - 不覆盖site.css的body样式 */
+.main-content {
+    padding-top: 80px; /* 为固定导航栏留出空间 */
+    flex: 1;
+    padding-bottom: 80px; /* 为固定页脚留出空间 */
+}
+
+.navbar {
+    z-index: 1030; /* 确保导航栏在最上层 */
+}
+
+.offcanvas {
+    z-index: 1050; /* 确保侧边栏在最上层 */
+}
+
+/* footer样式现在由site.css控制 */
+/* 确保sidebar链接可点击 */
+.sidebar-link {
+    cursor: pointer;
+    pointer-events: auto;
+}
+
+.offcanvas-body {
+    pointer-events: auto;
+}
+
+/* 自定义样式 */
+.document-item {
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.document-item:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.document-item.active {
+    border-left: 4px solid #2196f3;
+}
+
+.content-preview {
+    position: fixed;
+    top: 80px;
+    right: 0;
+    width: 40%;
+    height: calc(100vh - 160px);
+    border-left: 1px solid #dee2e6;
+    z-index: 1000;
+    overflow-y: auto;
+    display: none;
+}
+
+.content-preview.show {
+    display: block;
+}
+
+.main-content-with-preview {
+    margin-right: 40%;
+}
+
+.highlight {
+    background-color: #fff3cd;
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-weight: bold;
+}
+
+/* 正文预览样式 */
+.content-preview-lines {
+    font-size: 0.875rem;
+    line-height: 1.5;
+}
+
+.preview-line {
+    background-color: #f8f9fa;
+    padding: 4px 8px;
+    border-radius: 4px;
+    border-left: 3px solid #007bff;
+    margin-bottom: 4px;
+    font-family: 'Microsoft YaHei', 'SimSun', sans-serif;
+}
+
+.preview-line:last-child {
+    margin-bottom: 0;
+}
+
+.preview-line .highlight {
+    background-color: #ffeb3b;
+    color: #000;
+    font-weight: bold;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.security-level {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+}
+
+.security-public { 
+    background-color: #d4edda; 
+    color: #155724; 
+}
+
+.security-internal { 
+    background-color: #fff3cd; 
+    color: #856404; 
+}
+
+.security-secret { 
+    background-color: #f8d7da; 
+    color: #721c24; 
+}
+
+.security-confidential { 
+    background-color: #d1ecf1; 
+    color: #0c5460; 
+}
+
+.security-top-secret { 
+    background-color: #e2e3e5; 
+    color: #383d41; 
+}
+
+.custom-tag-input {
+    transition: all 0.3s ease;
+}
+
+/* 标签徽章样式 */
+.tag-badge {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    margin: 0.125rem;
+    background-color: #007bff;
+    color: white;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+    transition: all 0.2s ease;
+}
+
+.tag-badge:hover {
+    background-color: #0056b3;
+}
+
+.tag-badge .remove-icon {
+    margin-left: 0.25rem;
+    cursor: pointer;
+    opacity: 0.8;
+}
+
+.tag-badge .remove-icon:hover {
+    opacity: 1;
+}
+
+/* 历史修订弹窗样式 */
+.revision-file-item {
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.revision-file-item:hover {
+    background-color: #f8f9fa;
+}
+
+.revision-file-item.selected {
+    background-color: #e3f2fd;
+    border-color: #2196f3;
+}
+
+.modal-lg {
+    max-width: 800px;
+}
+
+/* 密级与保密时间组合字段样式 */
+.security-combined .input-group {
+    height: 38px; /* 与select框保持一致的高度 */
+}
+
+.security-combined .input-group-text {
+    font-size: 0.875rem;
+    padding: 0.375rem 0.5rem;
+}
+
+.security-combined .btn {
+    padding: 0.375rem 0.5rem;
+    font-size: 0.875rem;
+}
+
+/* 日期选择器增强样式 */
+input[type="date"] {
+    position: relative;
+    cursor: pointer;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+    opacity: 1;
+}
+
+/* 日期输入框悬停效果 */
+input[type="date"]:hover {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* 日期输入框焦点效果 */
+input[type="date"]:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* 排序按钮样式 */
+.btn-check:checked + .btn-outline-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+    color: white;
+}
+
+.btn-check:checked + .btn-outline-secondary i {
+    color: white;
+}
+
+/* 分页样式 - 按照Bootstrap 4标准 */
+.pagination .page-link {
+    color: #2A6DB0;
+    border-color: #e5e7eb;
+    text-decoration: none;
+}
+
+.pagination .page-link:hover {
+    color: #1F5C99;
+    background-color: #e9ecef;
+    border-color: #dee2e6;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #2A6DB0;
+    border-color: #2A6DB0;
+    color: white;
+}
+
+.pagination .page-item.disabled .page-link {
+    color: #6b7280;
+    border-color: #e5e7eb;
+    background-color: #fff;
+    cursor: not-allowed;
+}
+
+.pagination .page-item.disabled .page-link:hover {
+    color: #6b7280;
+    background-color: #fff;
+    border-color: #e5e7eb;
+}
+
+/* 确保在Firefox中正常工作 */
+.pagination .page-link:focus {
+    box-shadow: 0 0 0 0.2rem rgba(42, 109, 176, 0.25);
+    outline: 0;
+}
+
+/* Modal层级控制样式 */
+/* 确保历史修订文件选择弹窗显示在最上层 */
+#revisionHistoryModal {
+    z-index: 9999 !important;
+}
+
+#revisionHistoryModal .modal-backdrop {
+    z-index: 9998 !important;
+}
+
+/* 历史修订文件选择弹窗宽度调整 */
+#revisionHistoryModal .modal-dialog {
+    max-width: 600px !important;
+    width: 90% !important;
+}
+
+/* 文件信息更新弹窗的层级 */
+#updateDocumentModal {
+    z-index: 1055 !important;
+}
+
+#updateDocumentModal .modal-backdrop {
+    z-index: 1054 !important;
+}
+
+/* 文件信息更新弹窗宽度调整 */
+#updateDocumentModal .modal-dialog {
+    max-width: 900px !important;
+    width: 95% !important;
+}

@@ -1,0 +1,129 @@
+<div class="row mb-3">
+    <div class="col-12">
+        <div class="btn-group" role="group" aria-label="检查类型选择">
+            <input type="radio" class="btn-check" name="checkType" id="leaderCheck" value="leader" checked>
+            <label class="btn btn-outline-primary" for="leaderCheck">首长检查</label>
+            
+            <input type="radio" class="btn-check" name="checkType" id="dailyCheck" value="daily">
+            <label class="btn btn-outline-primary" for="dailyCheck">日常检查</label>
+        </div>
+        
+        <a href="#" class="btn btn-outline-secondary ms-3" id="planSearchLink">
+            <i class="bi bi-search me-1" aria-hidden="true"></i>计划检索
+        </a>
+    </div>
+</div>
+
+<!-- 筛选条件区域（默认隐藏） -->
+<div class="filter-section" id="filterSection" style="display: none;">
+    <h5 class="mb-3">筛选条件</h5>
+    <div class="row g-3">
+        <div class="col-md-3">
+            <label for="filterStartDate" class="form-label">检查时间（开始）</label>
+            <input type="date" class="form-control" id="filterStartDate">
+        </div>
+        <div class="col-md-3">
+            <label for="filterEndDate" class="form-label">检查时间（结束）</label>
+            <input type="date" class="form-control" id="filterEndDate">
+        </div>
+        <div class="col-md-3" id="leaderFilterFields">
+            <label for="filterLeader" class="form-label">首长</label>
+            <input type="text" class="form-control" id="filterLeader" placeholder="请输入首长姓名">
+        </div>
+        <div class="col-md-3" id="leaderFilterFields2">
+            <label for="filterLeadDept" class="form-label">牵头处</label>
+            <div id="filterLeadDeptContainer"></div>
+        </div>
+        <div class="col-md-3" id="leaderFilterFields3">
+            <label for="filterAccompanyDept" class="form-label">陪同处</label>
+            <div id="filterAccompanyDeptContainer"></div>
+        </div>
+        <div class="col-md-3" id="dailyFilterFields" style="display: none;">
+            <label for="filterInspector" class="form-label">检查人</label>
+            <input type="text" class="form-control" id="filterInspector" placeholder="请输入检查人姓名">
+        </div>
+        <div class="col-md-3">
+            <label for="filterUnits" class="form-label">检查单位</label>
+            <div id="filterUnitsContainer"></div>
+        </div>
+        <div class="col-md-3">
+            <label for="filterCheckResult" class="form-label">检查结果</label>
+            <select class="form-control" id="filterCheckResult">
+                <option value="">全部结果</option>
+                <option value="优秀">优秀</option>
+                <option value="良好">良好</option>
+                <option value="需改进">需改进</option>
+            </select>
+        </div>
+        <div class="col-12">
+            <button type="button" class="btn btn-primary" onclick="performSearch()">
+                <i class="bi bi-search me-1" aria-hidden="true"></i>检索
+            </button>
+            <button type="button" class="btn btn-secondary ms-2" onclick="resetFilter()">
+                <i class="bi bi-arrow-clockwise me-1" aria-hidden="true"></i>重置
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- 执行率统计区域 -->
+<div class="row mb-4 execution-rate-stats" id="executionRateStats" style="display: none;">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-light">
+                <h6 class="mb-0">
+                    <i class="bi bi-graph-up me-2"></i>执行率统计
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="text-center">
+                            <div class="h4 mb-1" id="overallRate">--</div>
+                            <small class="text-muted">总体执行率</small>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="text-center">
+                            <div class="h4 mb-1" id="totalPlansCount">0</div>
+                            <small class="text-muted">总计划数</small>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="text-center">
+                            <div class="h4 mb-1" id="completedPlansCount">0</div>
+                            <small class="text-muted">已完成计划</small>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="text-center">
+                            <div class="h4 mb-1" id="totalPlannedUnits">0</div>
+                            <small class="text-muted">计划检查单位</small>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="text-center">
+                            <div class="h4 mb-1" id="totalActualUnits">0</div>
+                            <small class="text-muted">实际检查单位</small>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="text-center">
+                            <div class="h6 mb-1">检查结果分布</div>
+                            <div class="d-flex justify-content-center gap-2">
+                                <span class="badge bg-success" id="excellentCount">0</span>
+                                <span class="badge bg-primary" id="goodCount">0</span>
+                                <span class="badge bg-warning" id="improveCount">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 计划列表 -->
+<div id="planList">
+    <!-- 计划列表将通过JavaScript动态生成 -->
+</div>

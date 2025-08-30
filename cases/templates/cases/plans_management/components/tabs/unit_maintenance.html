@@ -1,0 +1,53 @@
+<!-- 查询条件区域 -->
+<div class="filter-section mb-4">
+    <h5 class="mb-3">信息检索</h5>
+    <div class="row g-3">
+        <div class="col-md-3">
+            <label for="searchUnitName" class="form-label">单位名称</label>
+            <input type="text" class="form-control" id="searchUnitName" placeholder="请输入单位名称">
+        </div>
+        <div class="col-md-3">
+            <label for="searchUnitLevel" class="form-label">级别</label>
+            <select class="form-control" id="searchUnitLevel">
+                <option value="">全部级别</option>
+                <option value="基地">基地</option>
+                <option value="机关">机关</option>
+                <option value="基层">基层</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label for="searchLocation" class="form-label">驻地</label>
+            <input type="text" class="form-control" id="searchLocation" placeholder="请输入驻地">
+        </div>
+        <div class="col-md-3">
+            <label for="searchDistance" class="form-label">距离（公里）</label>
+            <input type="number" class="form-control" id="searchDistance" min="0" step="0.1" placeholder="请输入距离">
+        </div>
+        <div class="col-md-3">
+            <label for="searchTags" class="form-label">标签</label>
+            <div id="searchTagsContainer"></div>
+        </div>
+        <div class="col-12">
+            <button type="button" class="btn btn-primary" onclick="searchUnits()">
+                <i class="bi bi-search me-1" aria-hidden="true"></i>查询
+            </button>
+            <button type="button" class="btn btn-secondary ms-2" onclick="resetUnitSearch()">
+                <i class="bi bi-arrow-clockwise me-1" aria-hidden="true"></i>重置
+            </button>
+            <button type="button" class="btn btn-success ms-2" onclick="showAddUnitModal()">
+                <i class="bi bi-plus-circle me-1" aria-hidden="true"></i>新增单位
+            </button>
+            <button type="button" class="btn btn-outline-info ms-2" onclick="expandAllUnits()">
+                <i class="bi bi-chevron-down me-1" aria-hidden="true"></i>展开全部
+            </button>
+            <button type="button" class="btn btn-outline-warning ms-2" onclick="collapseAllUnits()">
+                <i class="bi bi-chevron-up me-1" aria-hidden="true"></i>折叠全部
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- 单位列表 -->
+<div id="unitListContainer">
+    <!-- 单位列表将通过JavaScript动态生成 -->
+</div>

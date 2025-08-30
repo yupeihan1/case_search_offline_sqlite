@@ -1,0 +1,373 @@
+/* 计划管理模块特定样式 */
+
+/* 页面特定样式 */
+.plans-management-page .main-content {
+    padding-top: 100px;
+}
+
+/* 计划项样式 */
+.plan-item {
+    background: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 0.375rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    transition: all 0.2s ease-in-out;
+}
+
+.plan-item:hover {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    border-color: #adb5bd;
+}
+
+.plan-item.urgent {
+    border-left: 4px solid #dc3545;
+    background-color: #fff5f5;
+}
+
+.plan-item.completed {
+    border-left: 4px solid #198754;
+    background-color: #f8fff9;
+}
+
+/* 原因分析印章样式 */
+.reason-stamp {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    border-radius: 50%;
+    font-weight: bold;
+    font-size: 14px;
+    color: #fff;
+    transform: rotate(-15deg);
+}
+
+.reason-stamp.reason-person {
+    background-color: #dc3545;
+}
+
+.reason-stamp.reason-object {
+    background-color: #fd7e14;
+}
+
+.reason-stamp.reason-environment {
+    background-color: #20c997;
+}
+
+.reason-stamp.reason-management {
+    background-color: #6f42c1;
+}
+
+.reason-stamp.reason-responsibility {
+    background-color: #e83e8c;
+}
+
+/* 单位树形结构样式 */
+.unit-tree-item {
+    background: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 0.375rem;
+    margin-bottom: 0.5rem;
+    transition: all 0.2s ease-in-out;
+}
+
+.unit-tree-item:hover {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.unit-tree-item.base-item {
+    border-left: 4px solid #0d6efd;
+}
+
+.unit-tree-item.org-item {
+    border-left: 4px solid #198754;
+}
+
+.unit-tree-item.basic-item {
+    border-left: 4px solid #fd7e14;
+}
+
+.unit-tree-content {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    gap: 1rem;
+}
+
+.unit-tree-toggle {
+    cursor: pointer;
+    font-size: 1.2rem;
+    color: #6c757d;
+    transition: transform 0.2s ease-in-out;
+}
+
+.unit-tree-toggle.collapsed {
+    transform: rotate(-90deg);
+}
+
+.unit-tree-info {
+    flex: 1;
+}
+
+.unit-name {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.unit-meta {
+    font-size: 0.875rem;
+    color: #6c757d;
+}
+
+.unit-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.check-count {
+    position: relative;
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+    background: #f8f9fa;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+}
+
+.check-tooltip {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #000;
+    color: #fff;
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease-in-out;
+}
+
+.check-count:hover .check-tooltip {
+    opacity: 1;
+    visibility: visible;
+}
+
+.unit-tree-children {
+    margin-left: 2rem;
+    transition: all 0.3s ease-in-out;
+}
+
+.unit-tree-children.collapsed {
+    display: none;
+}
+
+/* 单位级别标识 */
+.unit-level-badge {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 0.25rem;
+    margin-left: 0.5rem;
+}
+
+.unit-level-badge.base {
+    background-color: #e3f2fd;
+    color: #1976d2;
+}
+
+.unit-level-badge.org {
+    background-color: #e8f5e8;
+    color: #2e7d32;
+}
+
+.unit-level-badge.basic {
+    background-color: #fff3e0;
+    color: #f57c00;
+}
+
+/* 部门树形结构样式 */
+.department-tree-item {
+    background: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 0.375rem;
+    margin-bottom: 0.5rem;
+    transition: all 0.2s ease-in-out;
+}
+
+.department-tree-item:hover {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.department-tree-item.dept-item-bu {
+    border-left: 4px solid #0d6efd;
+}
+
+.department-tree-item.dept-item-chu {
+    border-left: 4px solid #198754;
+}
+
+.department-tree-item.dept-item-ke {
+    border-left: 4px solid #fd7e14;
+}
+
+.department-tree-content {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    gap: 1rem;
+}
+
+.department-tree-toggle {
+    cursor: pointer;
+    font-size: 1.2rem;
+    color: #6c757d;
+    transition: transform 0.2s ease-in-out;
+}
+
+.department-tree-toggle.collapsed {
+    transform: rotate(-90deg);
+}
+
+.department-tree-info {
+    flex: 1;
+}
+
+.department-name {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.department-meta {
+    font-size: 0.875rem;
+    color: #6c757d;
+    margin-bottom: 0.5rem;
+}
+
+.department-description {
+    font-size: 0.875rem;
+    color: #6c757d;
+}
+
+.department-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.department-tree-children {
+    margin-left: 2rem;
+    transition: all 0.3s ease-in-out;
+}
+
+.department-tree-children.collapsed {
+    display: none;
+}
+
+/* 部门级别标识 */
+.dept-level-badge {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 0.25rem;
+    margin-left: 0.5rem;
+}
+
+.dept-level-badge.dept-level-bu {
+    background-color: #e3f2fd;
+    color: #1976d2;
+}
+
+.dept-level-badge.dept-level-chu {
+    background-color: #e8f5e8;
+    color: #2e7d32;
+}
+
+.dept-level-badge.dept-level-ke {
+    background-color: #fff3e0;
+    color: #f57c00;
+}
+
+/* 生成的计划项样式 */
+.generated-plan-item {
+    background: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 0.375rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.generated-plan-item .form-label {
+    font-weight: 600;
+    font-size: 0.875rem;
+    margin-bottom: 0.5rem;
+}
+
+/* 执行率统计样式 */
+.execution-rate-stats .card {
+    border: none;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.execution-rate-stats .card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+}
+
+/* 筛选条件样式 */
+.filter-section {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 0.375rem;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+/* 计划表单样式 */
+.plan-form-section {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 0.375rem;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+/* 通用隐藏类 */
+.hidden {
+    display: none !important;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .unit-tree-content,
+    .department-tree-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    
+    .unit-actions,
+    .department-actions {
+        width: 100%;
+        justify-content: flex-end;
+    }
+    
+    .unit-tree-children,
+    .department-tree-children {
+        margin-left: 1rem;
+    }
+}
+
+/* 浏览器兼容性 */
+@supports (-webkit-appearance: none) {
+    .plans-management-page .main-content {
+        padding-top: 100px;
+    }
+}

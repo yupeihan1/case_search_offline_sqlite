@@ -1,0 +1,55 @@
+<!-- 单位信息编辑模态框 -->
+<div class="modal fade" id="unitModal" tabindex="-1" aria-labelledby="unitModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="unitModalLabel">单位信息</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="unitForm">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="unitName" class="form-label">单位名称 <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="unitName" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="unitLevel" class="form-label">级别 <span class="text-danger">*</span></label>
+                            <select class="form-control" id="unitLevel" required>
+                                <option value="基地">基地</option>
+                                <option value="机关">机关</option>
+                                <option value="基层">基层</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="parentUnit" class="form-label">上级单位</label>
+                            <select class="form-control" id="parentUnit">
+                                <option value="">无上级单位</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="unitLocation" class="form-label">驻地</label>
+                            <input type="text" class="form-control" id="unitLocation" placeholder="请输入驻地">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="unitDistance" class="form-label">距离（公里）</label>
+                            <input type="number" class="form-control" id="unitDistance" min="0" step="0.1" placeholder="请输入距离">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="unitPersonnel" class="form-label">人员编制</label>
+                            <input type="number" class="form-control" id="unitPersonnel" min="0" placeholder="请输入人员编制">
+                        </div>
+                        <div class="col-12">
+                            <label for="unitTags" class="form-label">标签</label>
+                            <div id="unitTagsContainer"></div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" onclick="saveUnit()">保存</button>
+            </div>
+        </div>
+    </div>
+</div>

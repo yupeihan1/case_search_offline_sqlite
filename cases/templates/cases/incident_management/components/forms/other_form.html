@@ -1,0 +1,54 @@
+<div id="otherForm" style="display: none;">
+    <div class="row g-3">
+        <div class="col-md-6">
+            <label for="otherTime" class="form-label">时间 <span class="text-danger">*</span></label>
+            <input type="date" class="form-control" id="otherTime" required>
+        </div>
+        <div class="col-md-6">
+            <label for="otherProblemCategory" class="form-label">问题类别 <span class="text-danger">*</span></label>
+            <div id="otherProblemCategoryContainer"></div>
+        </div>
+        <div class="col-md-6">
+            <label for="otherProblemLevel" class="form-label">问题等级 <span class="text-danger">*</span></label>
+            <div id="otherProblemLevelContainer"></div>
+        </div>
+        <div class="col-md-6">
+            <label for="otherUnit" class="form-label">单位 <span class="text-danger">*</span></label>
+            <div id="otherUnitContainer"></div>
+        </div>
+        <div class="col-12">
+            <label for="otherProcess" class="form-label">经过 <span class="text-danger">*</span></label>
+            <textarea class="form-control" id="otherProcess" rows="3" required></textarea>
+        </div>
+        <div class="col-md-6">
+            <label for="otherDeaths" class="form-label">亡人</label>
+            <input type="number" class="form-control" id="otherDeaths" min="0">
+        </div>
+        <div class="col-md-6">
+            <label for="otherResponsibleCount" class="form-label">直接责任人数量</label>
+            <input type="number" class="form-control" id="otherResponsibleCount" min="0" onchange="updateResponsibleFields()">
+        </div>
+        
+        <!-- 责任人信息区域 -->
+        <div class="col-12" id="responsibleFieldsContainer">
+            <!-- 动态生成的责任人字段 -->
+        </div>
+        
+        <div class="col-md-6">
+            <label for="otherAttachments" class="form-label">附件</label>
+            <div class="input-group">
+                <input type="file" class="form-control" id="otherAttachments" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.gif" onchange="handleFileSelection('otherAttachments')" style="display: none;">
+                <input type="text" class="form-control" id="otherAttachmentsDisplay" placeholder="选择文件..." readonly>
+                <button class="btn btn-outline-secondary" type="button" onclick="document.getElementById('otherAttachments').click()">
+                    <i class="bi bi-folder2-open"></i> 浏览...
+                </button>
+            </div>
+            <div class="form-text">支持多选，可上传PDF、Word、Excel、图片等格式文件</div>
+            <div id="otherAttachmentsList"></div>
+        </div>
+        <div class="col-12">
+            <label for="otherRemarks" class="form-label">备注</label>
+            <textarea class="form-control" id="otherRemarks" rows="2"></textarea>
+        </div>
+    </div>
+</div>

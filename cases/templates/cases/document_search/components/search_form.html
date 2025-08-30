@@ -1,0 +1,110 @@
+<!-- 全文检索区域 -->
+<div id="searchSection" class="content-section hidden">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header">
+                    <h2 class="card-title h5 mb-0">全文检索</h2>
+                </div>
+                <div class="card-body">
+                    <form id="searchForm" role="search" aria-label="全文检索搜索表单">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="searchFileName" class="form-label">文件名（完全匹配）</label>
+                                <input type="text" class="form-control" id="searchFileName" name="searchFileName" placeholder="请输入完整文件名">
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label for="searchContent" class="form-label">正文内容</label>
+                                <input type="text" class="form-control" id="searchContent" name="searchContent" placeholder="请输入搜索关键词，用空格分隔">
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <label for="searchTags" class="form-label">可选标签</label>
+                                <div id="searchTagsContainer">
+                                    <!-- 搜索表单标签组件将在这里生成 -->
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label for="searchIssueUnit" class="form-label">签发单位</label>
+                                <input type="text" class="form-control" id="searchIssueUnit" name="searchIssueUnit" placeholder="请输入签发单位">
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <label for="searchEffectStatus" class="form-label">效力状态</label>
+                                <select class="form-select" id="searchEffectStatus" name="searchEffectStatus">
+                                    <option value="">全部状态</option>
+                                    <!-- 效力状态选项将通过JavaScript动态生成 -->
+                                </select>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label for="searchEffectiveStartDate" class="form-label">有效开始时间</label>
+                                <input type="date" class="form-control" id="searchEffectiveStartDate" name="searchEffectiveStartDate">
+                                <div class="form-text">可直接输入或点击日历图标选择日期</div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label for="searchEffectiveEndDate" class="form-label">有效终了时间</label>
+                                <input type="date" class="form-control" id="searchEffectiveEndDate" name="searchEffectiveEndDate">
+                                <div class="form-text">可直接输入或点击日历图标选择日期</div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label for="searchPublishDate" class="form-label">发布时间</label>
+                                <input type="date" class="form-control" id="searchPublishDate" name="searchPublishDate">
+                                <div class="form-text">可直接输入或点击日历图标选择日期</div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label for="searchFileNumber" class="form-label">文件编号</label>
+                                <input type="text" class="form-control" id="searchFileNumber" name="searchFileNumber" placeholder="请输入文件编号">
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label for="searchRemarks" class="form-label">备注</label>
+                                <input type="text" class="form-control" id="searchRemarks" name="searchRemarks" placeholder="请输入备注关键词">
+                            </div>
+                            
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="bi bi-search me-1" aria-hidden="true"></i>开始检索
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary btn-lg ms-2" id="clearSearch">
+                                    <i class="bi bi-arrow-clockwise me-1" aria-hidden="true"></i>清空条件
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 搜索结果区域 -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h2 class="card-title h5 mb-0">搜索结果</h2>
+                    <div class="d-flex align-items-center">
+                        <span class="text-muted me-3">找到 <strong id="searchResultCount">0</strong> 条结果</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div id="searchResults" class="list-group list-group-flush">
+                        <!-- 搜索结果将通过JavaScript动态生成 -->
+                    </div>
+                    
+                    <!-- 搜索结果分页 -->
+                    <nav aria-label="搜索结果分页" class="mt-4">
+                        <ul class="pagination justify-content-center" id="searchPagination">
+                            <!-- 分页将通过JavaScript动态生成 -->
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

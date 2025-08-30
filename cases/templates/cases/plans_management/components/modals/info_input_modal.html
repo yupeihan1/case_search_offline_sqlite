@@ -1,0 +1,54 @@
+<!-- 信息录入模态框 -->
+<div class="modal fade" id="infoInputModal" tabindex="-1" aria-labelledby="infoInputModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="infoInputModalLabel">信息录入</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="infoInputForm">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="actualDate" class="form-label">实际执行时间 <span class="text-danger">*</span></label>
+                            <input type="date" class="form-control" id="actualDate" required>
+                        </div>
+                        <div class="col-md-6" id="leaderFields">
+                            <label for="actualLeader" class="form-label">首长 <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="actualLeader" required>
+                        </div>
+                        <div class="col-md-6" id="leaderFields2">
+                            <label for="actualLeadDept" class="form-label">牵头处 <span class="text-danger">*</span></label>
+                            <div id="actualLeadDeptContainer"></div>
+                        </div>
+                        <div class="col-md-6" id="leaderFields3">
+                            <label for="actualAccompanyDept" class="form-label">陪同处</label>
+                            <div id="actualAccompanyDeptContainer"></div>
+                        </div>
+                        <div class="col-md-6" id="dailyFields" style="display: none;">
+                            <label for="actualInspector" class="form-label">检查人 <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="actualInspector" required>
+                        </div>
+                        <div class="col-12">
+                            <label for="actualUnits" class="form-label">检查单位 <span class="text-danger">*</span></label>
+                            <div id="actualUnitsContainer"></div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="checkResult" class="form-label">检查结果</label>
+                            <select class="form-control" id="checkResult">
+                                <option value="">请选择检查结果</option>
+                                <option value="优秀">优秀</option>
+                                <option value="良好">良好</option>
+                                <option value="需改进">需改进</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" onclick="saveInfo()">保存</button>
+            </div>
+        </div>
+    </div>
+</div>

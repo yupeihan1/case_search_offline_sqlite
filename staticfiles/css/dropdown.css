@@ -1,0 +1,289 @@
+/**
+ * 通用组件样式
+ */
+
+/* 标签下拉组件样式 */
+.tags-dropdown {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.tags-dropdown-toggle {
+    width: 100%;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 0.375rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    text-align: left;
+    position: relative;
+}
+
+.tags-dropdown-toggle:hover {
+    color: #212529;
+    background-color: #f8f9fa;
+    border-color: #86b7fe;
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+.tags-dropdown-toggle.active {
+    border-color: #86b7fe;
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+.tags-dropdown-toggle::after {
+    content: '';
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid #6c757d;
+    transition: transform 0.2s ease;
+}
+
+.tags-dropdown-toggle.active::after {
+    transform: translateY(-50%) rotate(180deg);
+}
+
+.tags-dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    display: none;
+    min-width: 10rem;
+    padding: 0.5rem 0;
+    margin: 0.125rem 0 0;
+    font-size: 1rem;
+    color: #212529;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0, 0, 0, 0.175);
+    border-radius: 0.375rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.175);
+    max-height: 300px;
+    overflow-y: auto;
+    width: 100%;
+}
+
+.tags-dropdown-menu.show {
+    display: block;
+}
+
+.tags-dropdown-item {
+    display: block;
+    width: 100%;
+    padding: 0.25rem 1rem;
+    clear: both;
+    font-weight: 400;
+    color: #212529;
+    text-align: inherit;
+    text-decoration: none;
+    white-space: nowrap;
+    background-color: transparent;
+    border: 0;
+    cursor: pointer;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.tags-dropdown-item:hover,
+.tags-dropdown-item:focus {
+    color: #1e2125;
+    background-color: #e9ecef;
+}
+
+.tags-dropdown-item:active {
+    color: #fff;
+    background-color: #0d6efd;
+}
+
+.tags-dropdown-item.selected {
+    background-color: #007bff !important;
+    color: #ffffff !important;
+}
+
+.tags-dropdown-item.selected:hover {
+    background-color: #0056b3 !important;
+    color: #ffffff !important;
+}
+
+.tags-dropdown-divider {
+    height: 0;
+    margin: 0.5rem 0;
+    overflow: hidden;
+    border-top: 1px solid rgba(0, 0, 0, 0.175);
+}
+
+/* 自定义标签输入区域样式 */
+.tags-dropdown .input-group {
+    margin: 0.5rem;
+}
+
+.tags-dropdown .form-control-sm {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.tags-dropdown .btn-sm {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+/* 已选标签预览样式 */
+.badge {
+    display: inline-block;
+    padding: 0.35em 0.65em;
+    font-size: 0.75em;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 0.375rem;
+}
+
+.badge.bg-primary {
+    color: #fff;
+    background-color: #0d6efd;
+}
+
+.badge .bi-x-circle {
+    font-size: 0.875em;
+    margin-left: 0.25em;
+}
+
+.badge .bi-x-circle:hover {
+    opacity: 0.8;
+}
+
+/* 成功提示消息样式 */
+.alert {
+    position: relative;
+    padding: 1rem 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: 0.375rem;
+}
+
+.alert-success {
+    color: #0f5132;
+    background-color: #d1e7dd;
+    border-color: #badbcc;
+}
+
+.alert-dismissible {
+    padding-right: 3rem;
+}
+
+.alert-dismissible .btn-close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 2;
+    padding: 1.25rem 1rem;
+}
+
+.btn-close {
+    box-sizing: content-box;
+    width: 1em;
+    height: 1em;
+    padding: 0.25em 0.25em;
+    color: #000;
+    background: transparent url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23000'%3e%3cpath d='M.293.293a1 1 0 0 1 1.414 0L8 6.586 14.293.293a1 1 0 1 1 1.414 1.414L9.414 8l6.293 6.293a1 1 0 0 1-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 0 1-1.414-1.414L6.586 8 .293 1.707a1 1 0 0 1 0-1.414z'/%3e%3c/svg%3e") center/1em auto no-repeat;
+    border: 0;
+    border-radius: 0.375rem;
+    opacity: 0.5;
+    cursor: pointer;
+}
+
+.btn-close:hover {
+    color: #000;
+    text-decoration: none;
+    opacity: 0.75;
+}
+
+/* 特定场景样式 */
+.generated-plan-item .tags-dropdown {
+    width: 100%;
+}
+
+.generated-plan-item .tags-dropdown-toggle {
+    font-size: 0.875rem;
+    padding: 0.25rem 0.5rem;
+}
+
+.generated-plan-item .tags-dropdown-menu {
+    max-height: 150px;
+}
+
+.generated-plan-item .tags-dropdown-item {
+    padding: 0.125rem 0.5rem;
+    font-size: 0.875rem;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .tags-dropdown-menu {
+        max-height: 250px;
+    }
+    
+    .tags-dropdown-item {
+        padding: 0.375rem 1rem;
+        font-size: 0.9rem;
+    }
+    
+    .badge {
+        font-size: 0.7em;
+        padding: 0.3em 0.6em;
+    }
+}
+
+/* 动画效果 */
+.tags-dropdown-menu {
+    animation: fadeInDown 0.2s ease-out;
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 滚动条样式 */
+.tags-dropdown-menu::-webkit-scrollbar {
+    width: 6px;
+}
+
+.tags-dropdown-menu::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.tags-dropdown-menu::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 3px;
+}
+
+.tags-dropdown-menu::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}

@@ -1,0 +1,16 @@
+
+body {
+    background-color: #f8f9fa;
+}
+h2 {
+    color: #0069d9;
+}
+table th {
+    text-align: center;
+}
+.card {
+    border-radius: 1rem;
+}
+.btn {
+    border-radius: 0.5rem;
+}
