@@ -9,7 +9,7 @@ echo "Starting Django application..."
 python manage.py runserver 0.0.0.0:8000 &
 
 echo "Starting SQLite Web..."
-sqlite_web --host 0.0.0.0 --port 8080 db.sqlite3 &
+sqlite_web --host 0.0.0.0 --port 8080 data/db.sqlite3 &
 
 echo "Services started:"
 echo "- Django: http://localhost:8000"
