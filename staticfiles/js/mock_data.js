@@ -1111,99 +1111,236 @@ const planManagementData = {
 
     // 部队信息数据
     units: [
-        // 基地
+        // 军种级别
         {
             id: 1,
-            name: '某基地',
-            level: '基地',
+            name: '陆军',
+            level: '军种',
             parentId: null,
-            hierarchy: ['某基地'],
-            location: '北京市',
+            hierarchy: ['陆军'],
+            location: '全国',
             distance: 0,
-            personnel: 5000,
+            personnel: 1000000,
             tags: ['重点单位'],
             children: []
         },
-        // 14个机关
         {
             id: 2,
+            name: '海军',
+            level: '军种',
+            parentId: null,
+            hierarchy: ['海军'],
+            location: '全国',
+            distance: 0,
+            personnel: 800000,
+            tags: ['重点单位'],
+            children: []
+        },
+        {
+            id: 3,
+            name: '空军',
+            level: '军种',
+            parentId: null,
+            hierarchy: ['空军'],
+            location: '全国',
+            distance: 0,
+            personnel: 600000,
+            tags: ['重点单位'],
+            children: []
+        },
+        
+        // 战区级别
+        {
+            id: 4,
+            name: '北部战区',
+            level: '战区',
+            parentId: 1,
+            hierarchy: ['陆军', '北部战区'],
+            location: '北京市',
+            distance: 0,
+            personnel: 200000,
+            tags: ['重点单位'],
+            children: []
+        },
+        {
+            id: 5,
+            name: '南部战区',
+            level: '战区',
+            parentId: 1,
+            hierarchy: ['陆军', '南部战区'],
+            location: '广州市',
+            distance: 0,
+            personnel: 180000,
+            tags: ['重点单位'],
+            children: []
+        },
+        {
+            id: 6,
+            name: '东部战区',
+            level: '战区',
+            parentId: 1,
+            hierarchy: ['陆军', '东部战区'],
+            location: '南京市',
+            distance: 0,
+            personnel: 190000,
+            tags: ['重点单位'],
+            children: []
+        },
+        {
+            id: 7,
+            name: '西部战区',
+            level: '战区',
+            parentId: 1,
+            hierarchy: ['陆军', '西部战区'],
+            location: '成都市',
+            distance: 0,
+            personnel: 170000,
+            tags: ['重点单位'],
+            children: []
+        },
+        {
+            id: 8,
+            name: '中部战区',
+            level: '战区',
+            parentId: 1,
+            hierarchy: ['陆军', '中部战区'],
+            location: '郑州市',
+            distance: 0,
+            personnel: 160000,
+            tags: ['重点单位'],
+            children: []
+        },
+        
+        // 基地级别
+        {
+            id: 9,
+            name: '大连基地',
+            level: '基地',
+            parentId: 4,
+            hierarchy: ['陆军', '北部战区', '大连基地'],
+            location: '大连市',
+            distance: 0,
+            personnel: 50000,
+            tags: ['重点单位'],
+            children: []
+        },
+        {
+            id: 10,
+            name: '沈阳基地',
+            level: '基地',
+            parentId: 4,
+            hierarchy: ['陆军', '北部战区', '沈阳基地'],
+            location: '沈阳市',
+            distance: 0,
+            personnel: 45000,
+            tags: ['重点单位'],
+            children: []
+        },
+        {
+            id: 11,
+            name: '广州基地',
+            level: '基地',
+            parentId: 5,
+            hierarchy: ['陆军', '南部战区', '广州基地'],
+            location: '广州市',
+            distance: 0,
+            personnel: 48000,
+            tags: ['重点单位'],
+            children: []
+        },
+        {
+            id: 12,
+            name: '南京基地',
+            level: '基地',
+            parentId: 6,
+            hierarchy: ['陆军', '东部战区', '南京基地'],
+            location: '南京市',
+            distance: 0,
+            personnel: 52000,
+            tags: ['重点单位'],
+            children: []
+        },
+        
+        // 机关级别
+        {
+            id: 13,
             name: '作战处',
             level: '机关',
-            parentId: 1,
-            hierarchy: ['某基地', '作战处'],
-            location: '北京市',
+            parentId: 9,
+            hierarchy: ['陆军', '北部战区', '大连基地', '作战处'],
+            location: '大连市',
             distance: 0,
             personnel: 200,
             tags: ['重点单位'],
             children: []
         },
         {
-            id: 3,
+            id: 14,
             name: '政治处',
             level: '机关',
-            parentId: 1,
-            hierarchy: ['某基地', '政治处'],
-            location: '北京市',
+            parentId: 9,
+            hierarchy: ['陆军', '北部战区', '大连基地', '政治处'],
+            location: '大连市',
             distance: 0,
             personnel: 150,
             tags: ['重点单位'],
             children: []
         },
         {
-            id: 4,
+            id: 15,
             name: '后勤处',
             level: '机关',
-            parentId: 1,
-            hierarchy: ['某基地', '后勤处'],
-            location: '北京市',
+            parentId: 9,
+            hierarchy: ['陆军', '北部战区', '大连基地', '后勤处'],
+            location: '大连市',
             distance: 0,
             personnel: 180,
             tags: ['后勤保障'],
             children: []
         },
         {
-            id: 5,
+            id: 16,
             name: '装备处',
             level: '机关',
-            parentId: 1,
-            hierarchy: ['某基地', '装备处'],
-            location: '北京市',
+            parentId: 9,
+            hierarchy: ['陆军', '北部战区', '大连基地', '装备处'],
+            location: '大连市',
             distance: 0,
             personnel: 160,
             tags: ['装备维护'],
             children: []
         },
         {
-            id: 6,
+            id: 17,
             name: '训练处',
             level: '机关',
-            parentId: 1,
-            hierarchy: ['某基地', '训练处'],
-            location: '北京市',
+            parentId: 9,
+            hierarchy: ['陆军', '北部战区', '大连基地', '训练处'],
+            location: '大连市',
             distance: 0,
             personnel: 120,
             tags: ['训练基地'],
             children: []
         },
         {
-            id: 7,
+            id: 18,
             name: '情报处',
             level: '机关',
-            parentId: 1,
-            hierarchy: ['某基地', '情报处'],
-            location: '北京市',
+            parentId: 9,
+            hierarchy: ['陆军', '北部战区', '大连基地', '情报处'],
+            location: '大连市',
             distance: 0,
             personnel: 100,
             tags: ['重点单位'],
             children: []
         },
         {
-            id: 8,
+            id: 19,
             name: '通信处',
             level: '机关',
-            parentId: 1,
-            hierarchy: ['某基地', '通信处'],
-            location: '北京市',
+            parentId: 9,
+            hierarchy: ['陆军', '北部战区', '大连基地', '通信处'],
+            location: '大连市',
             distance: 0,
             personnel: 90,
             tags: ['装备维护'],
@@ -1368,7 +1505,7 @@ const planManagementData = {
         // 部队信息维护标签
         unitTags: ['重点单位', '偏远单位', '新建单位', '训练基地', '后勤保障', '装备维护'],
         
-        // 检查单位标签
+        // 受检单位标签
         checkUnits: ['一营', '二营', '三营', '四营', '五营', '六营', '七营', '八营', '九营', '十营']
     },
 
@@ -1555,8 +1692,8 @@ function generateCompleteUnitData() {
     // 为每个机关生成基层单位
     planManagementData.units.forEach(orgUnit => {
         if (orgUnit.level === '机关') {
-            // 每个机关生成5-8个基层单位
-            const basicUnitCount = Math.floor(Math.random() * 4) + 5;
+            // 每个机关生成3-6个基层单位
+            const basicUnitCount = Math.floor(Math.random() * 4) + 3;
             for (let i = 1; i <= basicUnitCount; i++) {
                 const basicUnit = {
                     id: completeUnits.length + 1,

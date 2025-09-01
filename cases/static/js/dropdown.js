@@ -51,11 +51,17 @@ class TagsDropdownManager {
             maxCustomLength = 20,
             helpText = null,
             onTagsChange = null,
-            onCustomTagAdd = null
+            onCustomTagAdd = null,
+            // 新增自定义文字配置
+            selectedText = '已选择 {count} 个标签',  // 已选择时的显示文字，{count}会被替换为实际数量
+            previewLabel = '已选标签:',              // 预览区域的标签文字
+            customInputPlaceholder = '输入自定义标签', // 自定义输入框的占位符
+            addButtonText = '添加',                   // 添加按钮的文字
+            unitText = '个'                          // 数量单位文字
         } = config;
 
         // 生成标签下拉组件的HTML结构
-        const html = this.generateTagsComponentHTML(id, options, placeholder, allowCustom, helpText);
+        const html = this.generateTagsComponentHTML(id, options, placeholder, allowCustom, helpText, customInputPlaceholder, addButtonText);
         
         // 创建标签组件实例对象
         const component = {
@@ -67,7 +73,11 @@ class TagsDropdownManager {
             maxCustomLength,                 // 自定义标签最大长度
             onTagsChange,                    // 标签变化回调函数
             onCustomTagAdd,                  // 自定义标签添加回调函数
-            element: null                    // DOM元素引用
+            element: null,                   // DOM元素引用
+            // 新增自定义文字配置
+            selectedText,                    // 已选择时的显示文字
+            previewLabel,                    // 预览区域的标签文字
+            unitText                         // 数量单位文字
         };
 
         // 存储组件实例到管理器
@@ -86,11 +96,25 @@ class TagsDropdownManager {
     }
 
     // 生成标签下拉组件的HTML结构
-    generateTagsComponentHTML(id, options, placeholder, allowCustom, helpText) {
+    generateTagsComponentHTML(id, options, placeholder, allowCustom, helpText, customInputPlaceholder, addButtonText) {
         // 生成可选标签的HTML
         const optionsHtml = options.map(tag => 
             `<button type="button" class="tags-dropdown-item" data-value="${tag}">${tag}</button>`
         ).join('');
+
+        // 生成搜索框HTML
+        const searchBoxHtml = `
+            <div class="p-2 border-bottom">
+                <div class="input-group input-group-sm">
+                    <span class="input-group-text">
+                        <i class="bi bi-search"></i>
+                    </span>
+                    <input type="text" class="form-control form-control-sm tags-search-input" 
+                           id="${id}_searchInput" placeholder="搜索标签..." 
+                           onkeyup="tagsDropdownManager.filterTags('${id}', this.value)">
+                </div>
+            </div>
+        `;
 
         // 生成自定义标签输入区域的HTML（如果允许自定义）
         const customInputHtml = allowCustom ? `
@@ -98,10 +122,10 @@ class TagsDropdownManager {
             <div class="p-2">
                 <div class="input-group input-group-sm">
                     <input type="text" class="form-control form-control-sm custom-tag-input" 
-                           id="${id}_customInput" placeholder="输入自定义标签">
+                           id="${id}_customInput" placeholder="${customInputPlaceholder}">
                     <button class="btn btn-outline-primary btn-sm" type="button" 
                             onclick="tagsDropdownManager.addCustomTag('${id}')">
-                        <i class="bi bi-plus"></i>
+                        <i class="bi bi-plus"></i> ${addButtonText}
                     </button>
                 </div>
             </div>
@@ -115,7 +139,10 @@ class TagsDropdownManager {
                     ${placeholder}
                 </button>
                 <div class="tags-dropdown-menu" id="${id}_menu">
-                    ${optionsHtml}
+                    ${searchBoxHtml}
+                    <div class="tags-options-container" id="${id}_optionsContainer">
+                        ${optionsHtml}
+                    </div>
                     ${customInputHtml}
                 </div>
             </div>
@@ -159,6 +186,51 @@ class TagsDropdownManager {
         }, 100);
     }
 
+    // 过滤标签选项
+    filterTags(id, searchText) {
+        const component = this.components.get(id);
+        if (!component) return;
+
+        const optionsContainer = document.getElementById(`${id}_optionsContainer`);
+        if (!optionsContainer) return;
+
+        const searchLower = searchText.toLowerCase().trim();
+        const tagItems = optionsContainer.querySelectorAll('.tags-dropdown-item');
+
+        tagItems.forEach(item => {
+            const tagText = item.textContent.toLowerCase();
+            if (searchLower === '' || tagText.includes(searchLower)) {
+                item.style.display = 'block';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+
+        // 如果没有匹配的标签，显示提示信息
+        const visibleItems = optionsContainer.querySelectorAll('.tags-dropdown-item[style*="display: block"], .tags-dropdown-item:not([style*="display: none"])');
+        const noResultsElement = optionsContainer.querySelector('.no-results-message');
+        
+        if (visibleItems.length === 0 && searchLower !== '') {
+            if (!noResultsElement) {
+                const noResults = document.createElement('div');
+                noResults.className = 'no-results-message p-2 text-muted text-center';
+                noResults.innerHTML = '<small>没有找到匹配的标签</small>';
+                optionsContainer.appendChild(noResults);
+            }
+        } else if (noResultsElement) {
+            noResultsElement.remove();
+        }
+    }
+
+    // 清空搜索框
+    clearSearch(id) {
+        const searchInput = document.getElementById(`${id}_searchInput`);
+        if (searchInput) {
+            searchInput.value = '';
+            this.filterTags(id, '');
+        }
+    }
+
     // 切换标签下拉框的显示/隐藏状态
     toggleTagsDropdown(id) {
         const dropdown = document.getElementById(`${id}_dropdown`);
@@ -174,6 +246,8 @@ class TagsDropdownManager {
         } else {
             menu.classList.add('show');
             toggle.classList.add('active');
+            // 清空搜索框并重置过滤
+            this.clearSearch(id);
         }
     }
 
@@ -265,7 +339,7 @@ class TagsDropdownManager {
         const toggle = document.getElementById(`${id}_toggle`);
         if (toggle) {
             if (component.selectedTags.length > 0) {
-                toggle.textContent = `已选择 ${component.selectedTags.length} 个标签`;
+                toggle.textContent = component.selectedText.replace('{count}', component.selectedTags.length);
             } else {
                 toggle.textContent = component.placeholder || '请选择标签';
             }
@@ -286,15 +360,11 @@ class TagsDropdownManager {
         const component = this.components.get(id);
         if (!component) return;
 
-        const menu = document.getElementById(`${id}_menu`);
-        if (!menu) return;
-
-        // 保存自定义输入区域，避免更新时被删除
-        const divider = menu.querySelector('.tags-dropdown-divider');
-        const customInputArea = divider ? divider.nextElementSibling : null;
+        const optionsContainer = document.getElementById(`${id}_optionsContainer`);
+        if (!optionsContainer) return;
 
         // 清除现有的所有标签项
-        const tagItems = menu.querySelectorAll('.tags-dropdown-item');
+        const tagItems = optionsContainer.querySelectorAll('.tags-dropdown-item');
         tagItems.forEach(item => item.remove());
 
         // 重新生成所有标签选项
@@ -305,12 +375,7 @@ class TagsDropdownManager {
             newItem.setAttribute('data-value', tag);
             newItem.textContent = tag;
             
-            // 插入到自定义输入区域之前
-            if (divider) {
-                menu.insertBefore(newItem, divider);
-            } else {
-                menu.appendChild(newItem);
-            }
+            optionsContainer.appendChild(newItem);
         });
 
         // 重新绑定事件监听器
@@ -330,7 +395,7 @@ class TagsDropdownManager {
             const tagsHtml = component.selectedTags.map(tag => 
                 `<span class="badge bg-primary me-1 mb-1">${tag} <i class="bi bi-x-circle ms-1" onclick="tagsDropdownManager.removeTag('${id}', '${tag}')" style="cursor: pointer;"></i></span>`
             ).join('');
-            previewArea.innerHTML = `<small class="text-muted">已选标签:</small><br>${tagsHtml}`;
+            previewArea.innerHTML = `<small class="text-muted">${component.previewLabel}</small><br>${tagsHtml}`;
         } else {
             // 如果没有已选标签，清空预览区域
             previewArea.innerHTML = '';
@@ -399,6 +464,10 @@ class TagsDropdownManager {
                     const toggle = dropdown.querySelector('.tags-dropdown-toggle');
                     if (menu) menu.classList.remove('show');
                     if (toggle) toggle.classList.remove('active');
+                    
+                    // 清空搜索框
+                    const dropdownId = dropdown.id.replace('_dropdown', '');
+                    this.clearSearch(dropdownId);
                 }
             });
         });

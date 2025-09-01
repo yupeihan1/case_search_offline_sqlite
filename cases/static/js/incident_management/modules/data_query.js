@@ -3,10 +3,51 @@
  * 负责查询功能、结果处理和导出功能
  */
 
+// 控制导出Excel按钮的显示
+function updateExportExcelButtonVisibility() {
+    const exportButton = document.querySelector('button[onclick="exportToExcel()"]');
+    if (!exportButton) return;
+    
+    const incidentType = document.getElementById('queryIncidentType').value;
+    const accidentSubType = document.getElementById('queryAccidentSubType').value;
+    
+    // 画面初期显示时，该按钮不显示
+    if (!incidentType) {
+        exportButton.style.display = 'none';
+        return;
+    }
+    
+    // 检查是否有查询结果
+    if (currentQueryResults.length === 0) {
+        exportButton.style.display = 'none';
+        return;
+    }
+    
+    // 根据类型判断是否显示导出按钮
+    let shouldShow = false;
+    
+    if (incidentType === 'accident') {
+        // 当类型选择了事故，事故类型选择了社会事故或者军队事故：显示导出Excel按钮
+        if (accidentSubType === 'social' || accidentSubType === 'military') {
+            shouldShow = true;
+        }
+    } else if (incidentType === 'case' || incidentType === 'suicide') {
+        // 当类型选择了案件/自杀：显示导出Excel按钮
+        shouldShow = true;
+    } else if (incidentType === 'hazard') {
+        // 当类型选择了问题隐患：显示导出Excel按钮
+        shouldShow = true;
+    }
+    
+    // 只有选择了单一类型时，才能使用导出excel功能
+    exportButton.style.display = shouldShow ? 'inline-block' : 'none';
+}
+
 // 处理查询类型变化
 function handleQueryTypeChange() {
     const incidentType = document.getElementById('queryIncidentType').value;
     const accidentSubTypeDiv = document.getElementById('queryAccidentSubTypeDiv');
+    const generalQueryConditions = document.getElementById('generalQueryConditions');
     const hazardQueryConditions = document.getElementById('hazardQueryConditions');
     const otherQueryConditions = document.getElementById('otherQueryConditions');
     
@@ -20,14 +61,26 @@ function handleQueryTypeChange() {
     
     // 显示/隐藏查询条件
     if (incidentType === 'hazard') {
+        generalQueryConditions.style.display = 'none';
         hazardQueryConditions.style.display = 'block';
         otherQueryConditions.style.display = 'none';
         updateQueryDropdowns();
+        // 初始化问题隐患的单位选择组件
+        setTimeout(() => {
+            initQueryUnitDropdown();
+        }, 100);
     } else if (incidentType === 'accident' || incidentType === 'case' || incidentType === 'suicide') {
+        generalQueryConditions.style.display = 'none';
         hazardQueryConditions.style.display = 'none';
         otherQueryConditions.style.display = 'block';
         updateQueryDropdowns();
+        // 初始化其他类型的单位选择组件
+        setTimeout(() => {
+            initQueryUnitDropdown();
+        }, 100);
     } else {
+        // 没有选择类型时，显示通用查询条件
+        generalQueryConditions.style.display = 'block';
         hazardQueryConditions.style.display = 'none';
         otherQueryConditions.style.display = 'none';
     }
@@ -43,6 +96,18 @@ function handleQueryTypeChange() {
         queryPagination = null;
     }
     currentQueryResults = [];
+    
+    // 更新导出Excel按钮的显示状态
+    updateExportExcelButtonVisibility();
+    
+    // 添加事故子类型变化的事件监听器
+    const accidentSubTypeSelect = document.getElementById('queryAccidentSubType');
+    if (accidentSubTypeSelect) {
+        // 移除之前的事件监听器（如果存在）
+        accidentSubTypeSelect.removeEventListener('change', updateExportExcelButtonVisibility);
+        // 添加新的事件监听器
+        accidentSubTypeSelect.addEventListener('change', updateExportExcelButtonVisibility);
+    }
 }
 
 // 更新查询下拉组件
@@ -67,15 +132,13 @@ function updateQueryDropdowns() {
             '电力安全', '燃气安全', '危险品安全', '特种设备安全', '其他'
         ];
         
-        tagsDropdownManager.createTagsComponent({
-            id: 'queryProblemCategory',
-            container: hazardCategoryContainer,
-            options: hazardProblemCategories,
-            placeholder: '点击选择问题类别',
-            allowCustom: true,
-            helpText: '点击选择问题类别，支持多选和自定义。',
-            maxCustomLength: 20
-        });
+        hazardCategoryContainer.innerHTML = `
+            <select class="form-control" id="queryProblemCategory">
+                <option value="">请选择问题类别</option>
+                ${hazardProblemCategories.map(category => `<option value="${category}">${category}</option>`).join('')}
+            </select>
+            <div class="form-text">点击选择问题类别，支持自定义。</div>
+        `;
     }
     
     // 更新问题类别下拉
@@ -97,49 +160,94 @@ function updateQueryDropdowns() {
         }
         
         if (categories.length > 0) {
-            tagsDropdownManager.createTagsComponent({
-                id: 'queryOtherProblemCategory',
-                container: categoryContainer,
-                options: categories,
-                placeholder: '请选择问题类别',
-                allowCustom: true,
-                helpText: '点击选择问题类别，支持自定义。',
-                maxCustomLength: 20
-            });
+            categoryContainer.innerHTML = `
+                <select class="form-control" id="queryOtherProblemCategory">
+                    <option value="">请选择问题类别</option>
+                    ${categories.map(category => `<option value="${category}">${category}</option>`).join('')}
+                </select>
+                <div class="form-text">点击选择问题类别，支持自定义。</div>
+            `;
         }
     }
     
     // 更新问题等级下拉
     const levelContainer = document.getElementById('queryProblemLevelContainer');
     if (levelContainer) {
-        tagsDropdownManager.createTagsComponent({
-            id: 'queryProblemLevel',
-            container: levelContainer,
-            options: problemLevels,
-            placeholder: '请选择问题等级',
-            allowCustom: false,
-            helpText: '点击选择问题等级，支持自定义。'
-        });
+        levelContainer.innerHTML = `
+            <select class="form-control" id="queryProblemLevel">
+                <option value="">请选择问题等级</option>
+                ${problemLevels.map(level => `<option value="${level}">${level}</option>`).join('')}
+            </select>
+            <div class="form-text">点击选择问题等级。</div>
+        `;
     }
 }
 
 // 初始化查询单位下拉组件
 function initQueryUnitDropdown() {
-    const container = document.getElementById('queryUnitContainer');
+    const incidentType = document.getElementById('queryIncidentType')?.value || '';
     
-    if (!container) return;
+    // 根据查询类型选择对应的容器
+    let containerId = '';
+    let componentId = '';
     
-    tagsDropdownManager.createTagsComponent({
-        id: 'queryUnit',
-        container: container,
-        options: unitOptions,
-        placeholder: '点击选择单位',
-        allowCustom: false,
-        helpText: '点击选择单位，支持多选，不支持自定义。',
-        onTagsChange: function(selectedTags) {
-            // 标签选择回调
-        }
-    });
+    if (incidentType === 'hazard') {
+        containerId = 'hazardQueryUnitContainer';
+        componentId = 'hazardQueryUnit';
+    } else if (incidentType === 'accident' || incidentType === 'case' || incidentType === 'suicide') {
+        containerId = 'otherQueryUnitContainer';
+        componentId = 'otherQueryUnit';
+    } else {
+        // 没有选择类型时，使用通用容器
+        containerId = 'generalQueryUnitContainer';
+        componentId = 'generalQueryUnit';
+    }
+    
+    const container = document.getElementById(containerId);
+    
+    if (!container) {
+        console.warn(`未找到容器: ${containerId}`);
+        return;
+    }
+    
+    // 使用联动下拉组件替代标签下拉组件
+    if (typeof cascadingDropdownManager !== 'undefined') {
+        // 从mock_data.js获取数据
+        const cascadingData = getCascadingDataFromMockData();
+        
+        cascadingDropdownManager.createCascadingComponent({
+            id: componentId,
+            container: container,
+            data: cascadingData,
+            showPath: true,
+            showSearch: true,
+            maxHeight: 250,
+            enablePersistence: false, // 不启用持久化，避免影响其他组件
+            storageKey: `${componentId}_temp`, // 使用临时存储键
+            onSelectionChange: function(selectionData) {
+                console.log('查询单位选择变化:', selectionData);
+                // 可以在这里添加选择验证逻辑
+            },
+            onCustomAdd: function(level, value) {
+                console.log('添加自定义单位:', level, value);
+            }
+        });
+    } else {
+        // 如果联动下拉组件未加载，回退到原来的标签下拉组件
+        tagsDropdownManager.createTagsComponent({
+            id: componentId,
+            container: container,
+            options: unitOptions,
+            placeholder: '点击选择单位',
+            selectedText: '已选择 {count} 个单位',
+            previewLabel: '已选单位:',
+            allowCustom: false,
+            helpText: '点击选择单位，支持多选，不支持自定义。',
+            onTagsChange: function(selectedTags) {
+                // 标签选择回调
+            }
+        });
+    }
 }
 
 // 执行查询
@@ -149,10 +257,31 @@ function executeQuery() {
     const startDate = document.getElementById('queryStartDate').value;
     const endDate = document.getElementById('queryEndDate').value;
     
-    // 获取选中的单位（多选）
+    // 获取选中的单位（联动下拉组件）
     let selectedUnits = [];
-    if (typeof tagsDropdownManager !== 'undefined') {
-        selectedUnits = tagsDropdownManager.getSelectedTags('queryUnit');
+    if (typeof cascadingDropdownManager !== 'undefined') {
+        // 根据查询类型获取对应的单位选择组件ID
+        let unitComponentId = '';
+        if (incidentType === 'hazard') {
+            unitComponentId = 'hazardQueryUnit';
+        } else if (incidentType === 'accident' || incidentType === 'case' || incidentType === 'suicide') {
+            unitComponentId = 'otherQueryUnit';
+        } else {
+            unitComponentId = 'generalQueryUnit';
+        }
+        
+        const selections = cascadingDropdownManager.getCascadingSelections(unitComponentId);
+        if (selections && Object.keys(selections).length > 0) {
+            // 将联动选择转换为单位路径字符串
+            const cascadingData = getCascadingDataFromMockData();
+            const selectionInfo = getSelectionInfo(selections, cascadingData);
+            selectedUnits = selectionInfo.path;
+        }
+    } else if (typeof tagsDropdownManager !== 'undefined') {
+        // 回退到标签下拉组件
+        const unitComponentId = incidentType === 'hazard' ? 'hazardQueryUnit' : 
+                               (incidentType === 'accident' || incidentType === 'case' || incidentType === 'suicide') ? 'otherQueryUnit' : 'generalQueryUnit';
+        selectedUnits = tagsDropdownManager.getSelectedTags(unitComponentId);
     }
     
     // 先销毁旧的分页器，确保从第一页开始
@@ -176,44 +305,45 @@ function executeQuery() {
             if (endDate && itemDate > endDate) return false;
         }
         
-        // 单位过滤（多选）
-        if (selectedUnits.length > 0 && !selectedUnits.includes(item.unit)) return false;
+        // 单位过滤（联动选择）
+        if (selectedUnits.length > 0) {
+            // 检查数据项的单位是否匹配选中的单位路径
+            const itemUnitPath = Array.isArray(item.unit) ? item.unit : [item.unit];
+            const hasMatchingUnit = selectedUnits.some(selectedUnit => {
+                // 如果选中的是完整路径，检查是否包含数据项的单位
+                if (Array.isArray(selectedUnit)) {
+                    return selectedUnit.some(unit => itemUnitPath.includes(unit));
+                } else {
+                    return itemUnitPath.includes(selectedUnit);
+                }
+            });
+            if (!hasMatchingUnit) return false;
+        }
         
         // 问题隐患特定过滤
         if (incidentType === 'hazard') {
             const hazardType = document.getElementById('queryHazardType').value;
             let selectedProblemCategories = [];
             
-            // 安全地获取选中的问题类别标签
-            if (typeof tagsDropdownManager !== 'undefined') {
-                selectedProblemCategories = tagsDropdownManager.getSelectedTags('queryProblemCategory');
-            }
+            // 获取选中的问题类别
+            const selectedProblemCategory = document.getElementById('queryProblemCategory').value;
+            
+            // 获取选中的通报条件
+            const selectedTypical = document.querySelector('input[name="queryTypical"]:checked')?.value || '';
             
             if (hazardType && item.hazardType !== hazardType) return false;
-            if (selectedProblemCategories.length > 0) {
-                // 处理problemCategory可能是数组或字符串的情况
-                const itemCategories = Array.isArray(item.problemCategory) ? item.problemCategory : [item.problemCategory];
-                if (!itemCategories.some(cat => selectedProblemCategories.includes(cat))) return false;
-            }
+            if (selectedProblemCategory && item.problemCategory !== selectedProblemCategory) return false;
+            if (selectedTypical && item.typical.toString() !== selectedTypical) return false;
         }
         
         // 其他类型特定过滤
         if (incidentType !== 'hazard') {
-            let selectedCategories = [];
-            let selectedLevels = [];
+            // 获取选中的问题类别和等级
+            const selectedCategory = document.getElementById('queryOtherProblemCategory').value;
+            const selectedLevel = document.getElementById('queryProblemLevel').value;
             
-            // 安全地获取选中的标签
-            if (typeof tagsDropdownManager !== 'undefined') {
-                selectedCategories = tagsDropdownManager.getSelectedTags('queryOtherProblemCategory');
-                selectedLevels = tagsDropdownManager.getSelectedTags('queryProblemLevel');
-            }
-            
-            if (selectedCategories.length > 0) {
-                // 处理problemCategory可能是数组或字符串的情况
-                const itemCategories = Array.isArray(item.problemCategory) ? item.problemCategory : [item.problemCategory];
-                if (!itemCategories.some(cat => selectedCategories.includes(cat))) return false;
-            }
-            if (selectedLevels.length > 0 && !selectedLevels.includes(item.problemLevel)) return false;
+            if (selectedCategory && item.problemCategory !== selectedCategory) return false;
+            if (selectedLevel && item.problemLevel !== selectedLevel) return false;
         }
         
         return true;
@@ -238,6 +368,9 @@ function executeQuery() {
     
     // 初始化查询分页器
     initQueryPagination(filteredData);
+    
+    // 更新导出Excel按钮的显示状态
+    updateExportExcelButtonVisibility();
 }
 
 // 初始化查询分页器
@@ -279,9 +412,37 @@ function initQueryPagination(data) {
 // 渲染查询结果（使用全局分页器）
 function renderQueryResults() {
     const tableBody = document.getElementById('resultsTableBody');
+    const tableHead = document.querySelector('#resultsTable thead tr');
     
     // 使用全局分页器获取当前页数据
     const currentPageData = queryPagination.getPageData(currentQueryResults);
+    
+    // 根据查询类型更新表头
+    const incidentType = document.getElementById('queryIncidentType').value;
+    if (incidentType === 'hazard') {
+        // 问题隐患类型：包含通报列
+        tableHead.innerHTML = `
+            <th>序号</th>
+            <th>类型</th>
+            <th>时间</th>
+            <th>单位</th>
+            <th>问题描述</th>
+            <th>通报</th>
+            <th>原因分析</th>
+            <th>操作</th>
+        `;
+    } else {
+        // 其他类型：不包含通报列
+        tableHead.innerHTML = `
+            <th>序号</th>
+            <th>类型</th>
+            <th>时间</th>
+            <th>单位</th>
+            <th>问题描述</th>
+            <th>原因分析</th>
+            <th>操作</th>
+        `;
+    }
     
     // 清空表格
     tableBody.innerHTML = '';
@@ -298,29 +459,59 @@ function renderQueryResults() {
         // 计算全局序号（考虑分页）
         const globalIndex = (queryPagination.options.currentPage - 1) * queryPagination.options.itemsPerPage + index + 1;
         
-        row.innerHTML = `
-            <td>${globalIndex}</td>
-            <td>${typeText}</td>
-            <td>${timeText}</td>
-            <td>${item.unit}</td>
-            <td>${problemText}</td>
-            <td>
-                <div class="reason-stamp ${getReasonStampClass(item.reasonAnalysis)}">${item.reasonAnalysis}</div>
-            </td>
-            <td>
-                <div class="btn-group btn-group-sm" role="group">
-                    <button type="button" class="btn btn-outline-primary" onclick="showDetail(${index})" title="查看详情">
-                        <i class="bi bi-eye"></i>
-                    </button>
-                    <button type="button" class="btn btn-outline-warning" onclick="editRecord(${index})" title="修改">
-                        <i class="bi bi-pencil"></i>
-                    </button>
-                    <button type="button" class="btn btn-outline-danger" onclick="deleteRecord(${index})" title="删除">
-                        <i class="bi bi-trash"></i>
-                    </button>
-                </div>
-            </td>
-        `;
+        // 根据类型生成不同的表格行
+        if (item.type === 'hazard') {
+            // 问题隐患类型：包含通报信息
+            row.innerHTML = `
+                <td>${globalIndex}</td>
+                <td>${typeText}</td>
+                <td>${timeText}</td>
+                <td>${item.unit}</td>
+                <td>${problemText}</td>
+                <td>${item.typical ? '是' : '否'}</td>
+                <td>
+                    <div class="reason-stamp ${getReasonStampClass(item.reasonAnalysis)}">${item.reasonAnalysis}</div>
+                </td>
+                <td>
+                    <div class="btn-group btn-group-sm" role="group">
+                        <button type="button" class="btn btn-outline-primary" onclick="showDetail(${index})" title="查看详情">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                        <button type="button" class="btn btn-outline-warning" onclick="editRecord(${index})" title="修改">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                        <button type="button" class="btn btn-outline-danger" onclick="deleteRecord(${index})" title="删除">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </div>
+                </td>
+            `;
+        } else {
+            // 其他类型：不包含通报信息
+            row.innerHTML = `
+                <td>${globalIndex}</td>
+                <td>${typeText}</td>
+                <td>${timeText}</td>
+                <td>${item.unit}</td>
+                <td>${problemText}</td>
+                <td>
+                    <div class="reason-stamp ${getReasonStampClass(item.reasonAnalysis)}">${item.reasonAnalysis}</div>
+                </td>
+                <td>
+                    <div class="btn-group btn-group-sm" role="group">
+                        <button type="button" class="btn btn-outline-primary" onclick="showDetail(${index})" title="查看详情">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                        <button type="button" class="btn btn-outline-warning" onclick="editRecord(${index})" title="修改">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                        <button type="button" class="btn btn-outline-danger" onclick="deleteRecord(${index})" title="删除">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </div>
+                </td>
+            `;
+        }
         
         tableBody.appendChild(row);
     });
@@ -442,4 +633,88 @@ function exportAllDataExcel() {
     link.click();
     
     showMessage(`所有问题数据统计表导出成功！共导出 ${data.length} 条记录`, 'success');
+}
+
+// 重置查询条件
+function resetQueryForm() {
+    // 重置基本查询条件
+    document.getElementById('queryIncidentType').value = '';
+    document.getElementById('queryAccidentSubType').value = '';
+    document.getElementById('queryStartDate').value = '';
+    document.getElementById('queryEndDate').value = '';
+    
+    // 重置联动下拉组件
+    if (typeof cascadingDropdownManager !== 'undefined') {
+        // 清空所有查询单位选择组件
+        const unitComponentIds = ['hazardQueryUnit', 'otherQueryUnit', 'generalQueryUnit'];
+        unitComponentIds.forEach(id => {
+            cascadingDropdownManager.clearCascadingSelections(id);
+        });
+    } else if (typeof tagsDropdownManager !== 'undefined') {
+        // 回退到标签下拉组件
+        const unitComponentIds = ['hazardQueryUnit', 'otherQueryUnit', 'generalQueryUnit'];
+        unitComponentIds.forEach(id => {
+            tagsDropdownManager.clearSelectedTags(id);
+        });
+    }
+    
+    // 重置问题隐患查询条件
+    document.getElementById('queryHazardType').value = '';
+    document.getElementById('queryProblemCategory').value = '';
+    document.querySelector('input[name="queryTypical"][value=""]').checked = true;
+    
+    // 重置其他类型查询条件
+    if (typeof tagsDropdownManager !== 'undefined') {
+        tagsDropdownManager.clearSelectedTags('queryOtherProblemCategory');
+        tagsDropdownManager.clearSelectedTags('queryProblemLevel');
+    }
+    
+    // 隐藏查询结果
+    document.getElementById('queryResults').style.display = 'none';
+    
+    // 销毁分页器
+    if (queryPagination) {
+        queryPagination.destroy();
+        queryPagination = null;
+    }
+    
+    showMessage('查询条件已重置', 'info');
+}
+
+// 获取联动下拉组件的显示文本
+function getQueryUnitDisplayText() {
+    if (typeof cascadingDropdownManager === 'undefined') {
+        return '';
+    }
+    
+    const selections = cascadingDropdownManager.getCascadingSelections('queryUnit');
+    if (!selections || Object.keys(selections).length === 0) {
+        return '';
+    }
+    
+    const cascadingData = getCascadingDataFromMockData();
+    const selectionInfo = getSelectionInfo(selections, cascadingData);
+    return selectionInfo.path.join(' > ');
+}
+
+// 验证联动下拉组件的选择
+function validateQueryUnitSelection() {
+    if (typeof cascadingDropdownManager === 'undefined') {
+        return { isValid: true, message: '' };
+    }
+    
+    const selections = cascadingDropdownManager.getCascadingSelections('queryUnit');
+    if (!selections || Object.keys(selections).length === 0) {
+        return { isValid: true, message: '' }; // 允许不选择单位
+    }
+    
+    // 检查是否选择了完整的路径（至少选择到基层级别）
+    const requiredLevels = ['military_branch', 'theater', 'base', 'department', 'unit'];
+    for (const level of requiredLevels) {
+        if (!selections[level]) {
+            return { isValid: false, message: `请选择完整的单位路径，当前缺少${level}级别` };
+        }
+    }
+    
+    return { isValid: true, message: '' };
 }

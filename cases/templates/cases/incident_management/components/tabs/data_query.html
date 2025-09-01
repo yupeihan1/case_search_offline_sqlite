@@ -25,21 +25,62 @@
                             <option value="social">社会事故</option>
                         </select>
                     </div>
-                    <div class="col-md-6">
-                        <label for="queryDateRange" class="form-label">时间范围</label>
-                        <div class="input-group">
-                            <input type="date" class="form-control" id="queryStartDate">
-                            <span class="input-group-text">至</span>
-                            <input type="date" class="form-control" id="queryEndDate">
+                    
+                    <!-- 通用时间范围和单位选择（当没有选择类型时显示） -->
+                    <div class="row g-3" id="generalQueryConditions">
+                        <!-- 第二行：时间范围 -->
+                        <div class="col-12">
+                            <label for="queryDateRange" class="form-label">时间范围</label>
+                            <div class="input-group">
+                                <input type="date" class="form-control" id="queryStartDate">
+                                <span class="input-group-text">至</span>
+                                <input type="date" class="form-control" id="queryEndDate">
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="queryUnit" class="form-label">单位</label>
-                        <div id="queryUnitContainer"></div>
+                        
+                        <!-- 第三行：单位 -->
+                        <div class="col-12">
+                            <label for="queryUnit" class="form-label">单位</label>
+                            <div id="generalQueryUnitContainer"></div>
+                        </div>
                     </div>
                     
                     <!-- 问题隐患查询条件 -->
                     <div class="row g-3" id="hazardQueryConditions" style="display: none;">
+                        <!-- 第二行：时间范围 | 通报 -->
+                        <div class="col-md-6">
+                            <label for="queryDateRange" class="form-label">时间范围</label>
+                            <div class="input-group">
+                                <input type="date" class="form-control" id="queryStartDate">
+                                <span class="input-group-text">至</span>
+                                <input type="date" class="form-control" id="queryEndDate">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">通报</label>
+                            <div class="d-flex gap-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="queryTypical" id="queryTypicalAll" value="" checked>
+                                    <label class="form-check-label" for="queryTypicalAll" style="font-size: 0.875rem;">
+                                        全部
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="queryTypical" id="queryTypicalYes" value="true">
+                                    <label class="form-check-label" for="queryTypicalYes" style="font-size: 0.875rem;">
+                                        是
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="queryTypical" id="queryTypicalNo" value="false">
+                                    <label class="form-check-label" for="queryTypicalNo" style="font-size: 0.875rem;">
+                                        否
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 第三行：检查类型 | 问题类别 -->
                         <div class="col-md-6">
                             <label for="queryHazardType" class="form-label">检查类型</label>
                             <select class="form-select" id="queryHazardType">
@@ -54,17 +95,40 @@
                             <label for="queryProblemCategory" class="form-label">问题类别</label>
                             <div id="queryProblemCategoryContainer"></div>
                         </div>
+                        
+                        <!-- 第四行：单位 -->
+                        <div class="col-12">
+                            <label for="queryUnit" class="form-label">单位</label>
+                            <div id="hazardQueryUnitContainer"></div>
+                        </div>
                     </div>
                     
                     <!-- 问题隐患以外查询条件 -->
                     <div class="row g-3" id="otherQueryConditions" style="display: none;">
+                        <!-- 第二行：时间范围 -->
+                        <div class="col-12">
+                            <label for="queryDateRange" class="form-label">时间范围</label>
+                            <div class="input-group">
+                                <input type="date" class="form-control" id="queryStartDate">
+                                <span class="input-group-text">至</span>
+                                <input type="date" class="form-control" id="queryEndDate">
+                            </div>
+                        </div>
+                        
+                        <!-- 第三行：问题等级 | 问题类别 -->
+                        <div class="col-md-6">
+                            <label for="queryProblemLevel" class="form-label">问题等级</label>
+                            <div id="queryProblemLevelContainer"></div>
+                        </div>
                         <div class="col-md-6">
                             <label for="queryOtherProblemCategory" class="form-label">问题类别</label>
                             <div id="queryOtherProblemCategoryContainer"></div>
                         </div>
-                        <div class="col-md-6">
-                            <label for="queryProblemLevel" class="form-label">问题等级</label>
-                            <div id="queryProblemLevelContainer"></div>
+                        
+                        <!-- 第四行：单位 -->
+                        <div class="col-12">
+                            <label for="queryUnit" class="form-label">单位</label>
+                            <div id="otherQueryUnitContainer"></div>
                         </div>
                     </div>
                     
@@ -75,7 +139,7 @@
                         <button type="reset" class="btn btn-secondary me-2">
                             <i class="bi bi-arrow-clockwise me-1"></i>重置
                         </button>
-                        <button type="button" class="btn btn-success" onclick="exportToExcel()">
+                        <button type="button" class="btn btn-success" onclick="exportToExcel()" style="display: none;">
                             <i class="bi bi-file-earmark-excel me-1"></i>导出Excel
                         </button>
                     </div>

@@ -5,8 +5,15 @@ function loadPlanList() {
     const planList = document.getElementById('planList');
     const filteredData = planData.filter(plan => plan.type === currentCheckType);
     
-    // 按时间由新到旧排序
-    filteredData.sort((a, b) => new Date(b.planStartDate) - new Date(a.planStartDate));
+    // 按与当前时间最近排序（与当前时间最近的计划排在最前面）
+    const currentDate = new Date();
+    filteredData.sort((a, b) => {
+        const dateA = new Date(a.planStartDate);
+        const dateB = new Date(b.planStartDate);
+        const diffA = Math.abs(currentDate - dateA);
+        const diffB = Math.abs(currentDate - dateB);
+        return diffA - diffB; // 时间差越小排在越前面
+    });
     
     planList.innerHTML = '';
     
@@ -39,13 +46,31 @@ function generatePlanItemHtml(plan) {
     // 计算执行率（仅对已完成的计划）
     let executionRateHtml = '';
     if (isCompleted && plan.units && plan.actualUnits) {
-        const rateResult = executionRateCalculator.calculate(plan.units, plan.actualUnits);
-        const rateClass = rateResult.rate >= 80 ? 'text-success' : rateResult.rate >= 60 ? 'text-warning' : 'text-danger';
+        // 计算计划执行率（PCR）
+        const pcrResult = executionRateCalculator.calculate(plan.units, plan.actualUnits);
+        const pcrClass = pcrResult.rate >= 80 ? 'text-success' : pcrResult.rate >= 60 ? 'text-warning' : 'text-danger';
+        
+        // 计算实际执行率（AR）
+        const arResult = executionRateCalculator.calculateAchievementRatio(plan.units, plan.actualUnits);
+        const arClass = arResult.rate >= 100 ? 'text-success' : arResult.rate >= 80 ? 'text-warning' : 'text-danger';
+        
+        // 计算计划偏移率（OPR）
+        const oprResult = executionRateCalculator.calculateOffPlanRate(plan.units, plan.actualUnits);
+        const oprClass = oprResult.rate <= 20 ? 'text-success' : oprResult.rate <= 40 ? 'text-warning' : 'text-danger';
+        
         executionRateHtml = `
             <div class="mt-2">
-                <span class="badge bg-light text-dark">
-                    <i class="bi bi-percent me-1"></i>执行率：<span class="${rateClass} fw-bold">${rateResult.displayText}</span>
-                </span>
+                <div class="d-flex flex-wrap gap-2">
+                    <span class="badge border text-dark">
+                        <i class="bi bi-percent me-1"></i>计划执行率：<span class="${pcrClass} fw-bold">${pcrResult.displayText}</span>
+                    </span>
+                    <span class="badge border text-dark">
+                        <i class="bi bi-graph-up me-1"></i>实际执行率：<span class="${arClass} fw-bold">${arResult.displayText}</span>
+                    </span>
+                    <span class="badge border text-dark">
+                        <i class="bi bi-graph-down me-1"></i>计划偏移率：<span class="${oprClass} fw-bold">${oprResult.displayText}</span>
+                    </span>
+                </div>
             </div>
         `;
     }
@@ -66,17 +91,8 @@ function generatePlanItemHtml(plan) {
         </button>`;
     }
     
-    // 生成检查结果徽章
-    let checkResultBadge = '';
-    if (plan.checkResult && plan.checkResult.trim() !== '') {
-        const badgeClass = plan.checkResult === '优秀' ? 'bg-success' : 
-                          plan.checkResult === '良好' ? 'bg-primary' : 'bg-warning';
-        checkResultBadge = `<span class="badge ${badgeClass} position-absolute top-0 end-0 m-2">${plan.checkResult}</span>`;
-    }
-    
     return `
         <div class="plan-item ${statusClass} position-relative" data-plan-id="${plan.id}" data-check-type="${plan.type}">
-            ${checkResultBadge}
             <div class="row align-items-center">
                 <div class="col-md-8">
                     ${contentHtml}
@@ -122,7 +138,7 @@ function generateLeaderPlanContent(plan) {
     }
     accompanyDeptHtml += '</p>';
     
-    let unitsHtml = `<p class="mb-1"><strong>检查单位：</strong>`;
+    let unitsHtml = `<p class="mb-1"><strong>受检单位：</strong>`;
     if (plan.actualDate && plan.actualUnits) {
         const planUnits = plan.units || [];
         const actualUnits = plan.actualUnits || [];
@@ -148,14 +164,17 @@ function generateLeaderPlanContent(plan) {
     }
     unitsHtml += '</p>';
     
-    let checkResultHtml = '';
-    if (plan.checkResult && plan.checkResult.trim() !== '') {
-        const resultClass = plan.checkResult === '优秀' ? 'text-success' : 
-                           plan.checkResult === '良好' ? 'text-primary' : 'text-warning';
-        checkResultHtml = `<p class="mb-1"><strong>检查结果：</strong><span class="${resultClass} fw-bold">${plan.checkResult}</span></p>`;
+    let issueCountHtml = '';
+    if (plan.issueCount !== undefined && plan.issueCount !== null) {
+        issueCountHtml = `<p class="mb-1"><strong>发现问题数：</strong>${plan.issueCount}</p>`;
     }
     
-    return timeRangeHtml + leaderHtml + leadDeptHtml + accompanyDeptHtml + unitsHtml + checkResultHtml;
+    let remarksHtml = '';
+    if (plan.remarks && plan.remarks.trim() !== '') {
+        remarksHtml = `<p class="mb-1"><strong>备注：</strong>${plan.remarks}</p>`;
+    }
+    
+    return timeRangeHtml + leaderHtml + leadDeptHtml + accompanyDeptHtml + unitsHtml + issueCountHtml + remarksHtml;
 }
 
 // 生成日常检查计划内容
@@ -166,6 +185,14 @@ function generateDailyPlanContent(plan) {
     }
     timeRangeHtml += '</h6>';
     
+    let deptHtml = `<p class="mb-1"><strong>检查处：</strong>`;
+    if (plan.actualDate && plan.actualDept && plan.actualDept !== plan.dept) {
+        deptHtml += `<span class="text-danger">${plan.actualDept}</span>`;
+    } else {
+        deptHtml += plan.dept || '未指定';
+    }
+    deptHtml += '</p>';
+    
     let inspectorHtml = `<p class="mb-1"><strong>检查人：</strong>`;
     if (plan.actualDate && plan.actualInspector && plan.actualInspector !== plan.inspector) {
         inspectorHtml += `<span class="text-danger">${plan.actualInspector}</span>`;
@@ -174,7 +201,7 @@ function generateDailyPlanContent(plan) {
     }
     inspectorHtml += '</p>';
     
-    let unitsHtml = `<p class="mb-1"><strong>检查单位：</strong>`;
+    let unitsHtml = `<p class="mb-1"><strong>受检单位：</strong>`;
     if (plan.actualDate && plan.actualUnits) {
         const planUnits = plan.units || [];
         const actualUnits = plan.actualUnits || [];
@@ -200,35 +227,49 @@ function generateDailyPlanContent(plan) {
     }
     unitsHtml += '</p>';
     
-    let checkResultHtml = '';
-    if (plan.checkResult && plan.checkResult.trim() !== '') {
-        const resultClass = plan.checkResult === '优秀' ? 'text-success' : 
-                           plan.checkResult === '良好' ? 'text-primary' : 'text-warning';
-        checkResultHtml = `<p class="mb-1"><strong>检查结果：</strong><span class="${resultClass} fw-bold">${plan.checkResult}</span></p>`;
+    let issueCountHtml = '';
+    if (plan.issueCount !== undefined && plan.issueCount !== null) {
+        issueCountHtml = `<p class="mb-1"><strong>发现问题数：</strong>${plan.issueCount}</p>`;
     }
     
-    return timeRangeHtml + inspectorHtml + unitsHtml + checkResultHtml;
+    let remarksHtml = '';
+    if (plan.remarks && plan.remarks.trim() !== '') {
+        remarksHtml = `<p class="mb-1"><strong>备注：</strong>${plan.remarks}</p>`;
+    }
+    
+    return timeRangeHtml + deptHtml + inspectorHtml + unitsHtml + issueCountHtml + remarksHtml;
 }
 
 // 执行检索
 function performSearch() {
-    const startDate = document.getElementById('filterStartDate').value;
-    const endDate = document.getElementById('filterEndDate').value;
+    const planStartDate = document.getElementById('filterPlanStartDate').value;
+    const planEndDate = document.getElementById('filterPlanEndDate').value;
+    const actualStartDate = document.getElementById('filterActualStartDate').value;
+    const actualEndDate = document.getElementById('filterActualEndDate').value;
     const leader = document.getElementById('filterLeader').value;
     const leadDept = tagsDropdownManager.getSelectedTags('filterLeadDept');
     const accompanyDept = tagsDropdownManager.getSelectedTags('filterAccompanyDept');
     const inspector = document.getElementById('filterInspector').value;
+    const dept = tagsDropdownManager.getSelectedTags('filterDept');
     const units = tagsDropdownManager.getSelectedTags('filterUnits');
-    const checkResult = document.getElementById('filterCheckResult').value;
     
     // 筛选数据
     let filteredData = planData.filter(plan => plan.type === currentCheckType);
     
-    if (startDate) {
-        filteredData = filteredData.filter(plan => plan.planStartDate >= startDate);
+    // 计划检查时间筛选
+    if (planStartDate) {
+        filteredData = filteredData.filter(plan => plan.planStartDate >= planStartDate);
     }
-    if (endDate) {
-        filteredData = filteredData.filter(plan => plan.planEndDate <= endDate);
+    if (planEndDate) {
+        filteredData = filteredData.filter(plan => plan.planEndDate <= planEndDate);
+    }
+    
+    // 实际检查时间筛选
+    if (actualStartDate) {
+        filteredData = filteredData.filter(plan => plan.actualDate && plan.actualDate >= actualStartDate);
+    }
+    if (actualEndDate) {
+        filteredData = filteredData.filter(plan => plan.actualDate && plan.actualDate <= actualEndDate);
     }
     
     if (currentCheckType === 'leader') {
@@ -251,6 +292,11 @@ function performSearch() {
         if (inspector) {
             filteredData = filteredData.filter(plan => plan.inspector.includes(inspector));
         }
+        if (dept.length > 0) {
+            filteredData = filteredData.filter(plan => 
+                plan.dept && dept.some(filterDept => plan.dept.includes(filterDept))
+            );
+        }
     }
     
     if (units.length > 0) {
@@ -259,12 +305,17 @@ function performSearch() {
         );
     }
     
-    if (checkResult) {
-        filteredData = filteredData.filter(plan => plan.checkResult === checkResult);
-    }
+
     
-    // 按时间由新到旧排序
-    filteredData.sort((a, b) => new Date(b.planStartDate) - new Date(a.planStartDate));
+    // 按与当前时间最近排序（与当前时间最近的计划排在最前面）
+    const currentDate = new Date();
+    filteredData.sort((a, b) => {
+        const dateA = new Date(a.planStartDate);
+        const dateB = new Date(b.planStartDate);
+        const diffA = Math.abs(currentDate - dateA);
+        const diffB = Math.abs(currentDate - dateB);
+        return diffA - diffB; // 时间差越小排在越前面
+    });
     
     // 更新显示
     const planList = document.getElementById('planList');
@@ -281,14 +332,16 @@ function performSearch() {
 
 // 重置筛选条件
 function resetFilter() {
-    document.getElementById('filterStartDate').value = '';
-    document.getElementById('filterEndDate').value = '';
+    document.getElementById('filterPlanStartDate').value = '';
+    document.getElementById('filterPlanEndDate').value = '';
+    document.getElementById('filterActualStartDate').value = '';
+    document.getElementById('filterActualEndDate').value = '';
     document.getElementById('filterLeader').value = '';
     document.getElementById('filterInspector').value = '';
-    document.getElementById('filterCheckResult').value = '';
     tagsDropdownManager.clearSelectedTags('filterUnits');
     tagsDropdownManager.clearSelectedTags('filterLeadDept');
     tagsDropdownManager.clearSelectedTags('filterAccompanyDept');
+    tagsDropdownManager.clearSelectedTags('filterDept');
     
     // 重新加载完整列表
     loadPlanList();
@@ -297,14 +350,13 @@ function resetFilter() {
 // 更新执行率统计
 function updateExecutionRateStats(plans) {
     const statsContainer = document.getElementById('executionRateStats');
-    const overallRateElement = document.getElementById('overallRate');
     const totalPlansCountElement = document.getElementById('totalPlansCount');
     const completedPlansCountElement = document.getElementById('completedPlansCount');
+    const incompletePlansCountElement = document.getElementById('incompletePlansCount');
     const totalPlannedUnitsElement = document.getElementById('totalPlannedUnits');
     const totalActualUnitsElement = document.getElementById('totalActualUnits');
-    const excellentCountElement = document.getElementById('excellentCount');
-    const goodCountElement = document.getElementById('goodCount');
-    const improveCountElement = document.getElementById('improveCount');
+    const totalOffPlanUnitsElement = document.getElementById('totalOffPlanUnits');
+    const totalIssuesCountElement = document.getElementById('totalIssuesCount');
     
     // 更新总计划数
     totalPlansCountElement.textContent = plans.length;
@@ -321,15 +373,15 @@ function updateExecutionRateStats(plans) {
     // 显示统计区域
     statsContainer.style.display = 'block';
     
-    // 计算总体执行率（使用加权平均）
+    // 计算总体执行率（使用加权平均）用于获取计划单位总数
     const overallResult = executionRateCalculator.calculateOverallRate(completedPlans);
     
     // 更新统计显示
-    overallRateElement.textContent = overallResult.displayText;
     completedPlansCountElement.textContent = completedPlans.length;
+    incompletePlansCountElement.textContent = plans.length - completedPlans.length;
     totalPlannedUnitsElement.textContent = overallResult.details.totalPlannedCount;
     
-    // 计算总实际检查单位数（用于显示）
+    // 计算总实际受检单位数（用于显示）
     let totalActualUnits = 0;
     completedPlans.forEach(plan => {
         if (plan.actualUnits && Array.isArray(plan.actualUnits)) {
@@ -340,32 +392,30 @@ function updateExecutionRateStats(plans) {
     });
     totalActualUnitsElement.textContent = totalActualUnits;
     
-    // 根据执行率设置颜色
-    const rateClass = overallResult.rate >= 80 ? 'text-success' : 
-                     overallResult.rate >= 60 ? 'text-warning' : 'text-danger';
-    overallRateElement.className = `h4 mb-1 ${rateClass}`;
-    
-    // 计算检查结果分布
-    let excellentCount = 0;
-    let goodCount = 0;
-    let improveCount = 0;
-    
+    // 计算总偏离单位数
+    let totalOffPlanUnits = 0;
     completedPlans.forEach(plan => {
-        if (plan.checkResult === '优秀') {
-            excellentCount++;
-        } else if (plan.checkResult === '良好') {
-            goodCount++;
-        } else if (plan.checkResult === '需改进') {
-            improveCount++;
+        if (plan.units && plan.actualUnits && Array.isArray(plan.units) && Array.isArray(plan.actualUnits)) {
+            const uniquePlannedUnits = [...new Set(plan.units.map(unit => String(unit).trim()))];
+            const uniqueActualUnits = [...new Set(plan.actualUnits.map(unit => String(unit).trim()))];
+            const symmetricDifference = uniquePlannedUnits.filter(unit => !uniqueActualUnits.includes(unit))
+                .concat(uniqueActualUnits.filter(unit => !uniquePlannedUnits.includes(unit)));
+            totalOffPlanUnits += symmetricDifference.length;
         }
-        // 空白的检查结果不计入统计
     });
+    totalOffPlanUnitsElement.textContent = totalOffPlanUnits;
     
-    // 更新检查结果分布显示
-    excellentCountElement.textContent = `优秀 ${excellentCount}`;
-    goodCountElement.textContent = `良好 ${goodCount}`;
-    improveCountElement.textContent = `需改进 ${improveCount}`;
+    // 计算问题总数
+    let totalIssuesCount = 0;
+    completedPlans.forEach(plan => {
+        if (plan.issueCount !== undefined && plan.issueCount !== null) {
+            totalIssuesCount += plan.issueCount;
+        }
+    });
+    totalIssuesCountElement.textContent = totalIssuesCount;
 }
+
+
 
 // 计划检索链接点击事件
 document.addEventListener('DOMContentLoaded', function() {

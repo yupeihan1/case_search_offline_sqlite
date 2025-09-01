@@ -1,5 +1,6 @@
 <div id="hazardForm" style="display: none;">
     <div class="row g-3">
+        <!-- 第一行：检查类型 | 计划选择 -->
         <div class="col-md-6">
             <label for="hazardType" class="form-label">检查类型 <span class="text-danger">*</span></label>
             <select class="form-select" id="hazardType" required onchange="handleHazardTypeChange()">
@@ -20,33 +21,52 @@
             </div>
             <div id="planHelpText" class="form-text" style="display: none;"></div>
         </div>
-        <div class="col-md-4">
-            <label for="hazardUnit" class="form-label">单位 <span class="text-danger">*</span></label>
-            <div id="hazardUnitContainer"></div>
-        </div>
-        <div class="col-md-4">
-            <label for="hazardCheckTime" class="form-label">检查时间 <span class="text-danger">*</span></label>
-            <input type="date" class="form-control" id="hazardCheckTime" required>
-        </div>
-        <div class="col-md-4" id="checkLocationDiv" style="display: none;">
-            <label for="hazardCheckLocation" class="form-label">检查处 <span id="checkLocationRequired" class="text-danger">*</span></label>
-            <input type="text" class="form-control" id="hazardCheckLocation" required>
-            <div id="checkLocationHelpText" class="form-text">综合检查需要填写检查处</div>
-        </div>
+        
+        <!-- 第二行：问题类别 -->
         <div class="col-12">
             <label for="hazardProblemCategory" class="form-label">问题类别 <span class="text-danger">*</span></label>
             <div id="hazardProblemCategoryContainer"></div>
         </div>
+        
+        <!-- 第三行：单位 -->
+        <div class="col-12">
+            <label for="hazardUnit" class="form-label">单位 <span class="text-danger">*</span></label>
+            <div id="hazardUnitContainer"></div>
+        </div>
+        
+        <!-- 第四行：检查时间 | 检查处 -->
+        <div class="col-md-6">
+            <label for="hazardCheckTime" class="form-label">检查时间 <span class="text-danger">*</span></label>
+            <input type="date" class="form-control" id="hazardCheckTime" required>
+        </div>
+        <div class="col-md-6" id="checkLocationDiv" style="display: none;">
+            <label for="hazardCheckLocation" class="form-label">检查处 <span id="checkLocationRequired" class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="hazardCheckLocation" required>
+            <div id="checkLocationHelpText" class="form-text">综合检查需要填写检查处</div>
+        </div>
+        
+        <!-- 第五行：具体问题（全宽） -->
         <div class="col-12">
             <label for="hazardProblem" class="form-label">具体问题 <span class="text-danger">*</span></label>
             <textarea class="form-control" id="hazardProblem" rows="3" required></textarea>
         </div>
+        
+        <!-- 第六行：通报 | 附件 -->
         <div class="col-md-6">
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="hazardTypical" checked>
-                <label class="form-check-label" for="hazardTypical">
-                    是否典型问题
-                </label>
+            <label class="form-label">通报</label>
+            <div class="d-flex gap-3">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="hazardTypical" id="hazardTypicalYes" value="true" checked>
+                    <label class="form-check-label" for="hazardTypicalYes">
+                        是
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="hazardTypical" id="hazardTypicalNo" value="false">
+                    <label class="form-check-label" for="hazardTypicalNo">
+                        否
+                    </label>
+                </div>
             </div>
         </div>
         <div class="col-md-6">
@@ -61,6 +81,8 @@
             <div class="form-text">支持多选，可上传PDF、Word、Excel、图片等格式文件</div>
             <div id="hazardAttachmentsList"></div>
         </div>
+        
+        <!-- 第七行：备注（全宽） -->
         <div class="col-12">
             <label for="hazardRemarks" class="form-label">备注</label>
             <textarea class="form-control" id="hazardRemarks" rows="2"></textarea>

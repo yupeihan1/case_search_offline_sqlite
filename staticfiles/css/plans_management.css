@@ -176,19 +176,29 @@
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
-.unit-tree-item.base-item {
-    border-left: 4px solid #dc3545;
-    background-color: #fff5f5;
+.unit-tree-item.military-item {
+    border-left: 4px solid #0d6efd;
+    background-color: #f0f8ff;
 }
 
-.unit-tree-item.org-item {
+.unit-tree-item.theater-item {
+    border-left: 4px solid #198754;
+    background-color: #f0fff0;
+}
+
+.unit-tree-item.base-item {
     border-left: 4px solid #fd7e14;
     background-color: #fff8f0;
 }
 
+.unit-tree-item.org-item {
+    border-left: 4px solid #ffc107;
+    background-color: #fffbf0;
+}
+
 .unit-tree-item.basic-item {
-    border-left: 4px solid #28a745;
-    background-color: #f8fff9;
+    border-left: 4px solid #dc3545;
+    background-color: #fff5f5;
 }
 
 .unit-tree-content {
@@ -332,18 +342,28 @@
     margin-left: 8px;
 }
 
-.unit-level-badge.base {
-    background-color: #dc3545;
+.unit-level-badge.military {
+    background-color: #0d6efd;
     color: #fff;
 }
 
-.unit-level-badge.org {
+.unit-level-badge.theater {
+    background-color: #198754;
+    color: #fff;
+}
+
+.unit-level-badge.base {
     background-color: #fd7e14;
     color: #fff;
 }
 
+.unit-level-badge.org {
+    background-color: #ffc107;
+    color: #000;
+}
+
 .unit-level-badge.basic {
-    background-color: #28a745;
+    background-color: #dc3545;
     color: #fff;
 }
 
@@ -526,20 +546,14 @@
 }
 
 .department-tree-item.dept-item-bu {
-    border-left: 4px solid #dc3545;
-    background-color: #fff5f5;
+    border-left: 4px solid #0d6efd;
+    background-color: #f0f8ff;
 }
 
 .department-tree-item.dept-item-chu {
-    border-left: 4px solid #fd7e14;
-    background-color: #fff8f0;
+    border-left: 4px solid #198754;
+    background-color: #f0fff0;
     margin-left: 20px;
-}
-
-.department-tree-item.dept-item-ke {
-    border-left: 4px solid #28a745;
-    background-color: #f8fff9;
-    margin-left: 40px;
 }
 
 .department-tree-content {
@@ -612,17 +626,12 @@
 }
 
 .dept-level-badge.dept-level-bu {
-    background-color: #dc3545;
+    background-color: #0d6efd;
     color: #fff;
 }
 
 .dept-level-badge.dept-level-chu {
-    background-color: #fd7e14;
-    color: #fff;
-}
-
-.dept-level-badge.dept-level-ke {
-    background-color: #28a745;
+    background-color: #198754;
     color: #fff;
 }
 
@@ -677,9 +686,5 @@
     
     .department-tree-item.dept-item-chu {
         margin-left: 10px;
-    }
-    
-    .department-tree-item.dept-item-ke {
-        margin-left: 20px;
     }
 }

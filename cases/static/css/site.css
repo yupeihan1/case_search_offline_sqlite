@@ -373,7 +373,7 @@ h1, h2, h3, h4, h5, h6,
 
 /* 表格样式 */
 .table {
-    font-size: 0.95rem;
+    font-size: 14px;
     background: var(--color-card-background);
     backdrop-filter: blur(10px);
     border-radius: 15px;
@@ -649,7 +649,7 @@ body {
     }
     
     body {
-        font-size: 1rem;
+        font-size: 14px;
     }
     
     .sidebar-offcanvas {
@@ -662,7 +662,7 @@ body {
     
     .btn {
         padding: 8px 20px;
-        font-size: 0.9rem;
+        font-size: 14px;
     }
 }
 

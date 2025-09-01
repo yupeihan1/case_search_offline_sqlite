@@ -7,7 +7,10 @@ function initializeUnitMaintenance() {
         id: 'searchTags',
         container: document.getElementById('searchTagsContainer'),
         options: planManagementData.tags.unitTags,
-        placeholder: '请选择标签'
+        placeholder: '请选择标签',
+        selectedText: '已选择 {count} 个标签',
+        previewLabel: '已选标签:',
+        helpText: '点击选择标签，支持多选'
     });
 
     // 初始化单位信息编辑中的标签下拉组件
@@ -15,7 +18,10 @@ function initializeUnitMaintenance() {
         id: 'unitTags',
         container: document.getElementById('unitTagsContainer'),
         options: planManagementData.tags.unitTags,
-        placeholder: '请选择标签'
+        placeholder: '请选择标签',
+        selectedText: '已选择 {count} 个标签',
+        previewLabel: '已选标签:',
+        helpText: '点击选择标签，支持多选和自定义'
     });
 
     // 加载初始部队数据
@@ -87,12 +93,17 @@ function generateTreeNodeHtml(unit, level, hasChildren) {
     const checkTooltip = generateCheckTooltip(unit.checkHistory || []);
 
     // 级别标识
-    const levelBadgeClass = unit.level === '基地' ? 'base' : unit.level === '机关' ? 'org' : 'basic';
+    const levelBadgeClass = unit.level === '军种' ? 'military' : 
+                           unit.level === '战区' ? 'theater' : 
+                           unit.level === '基地' ? 'base' : 
+                           unit.level === '机关' ? 'org' : 'basic';
     const levelBadge = `<span class="unit-level-badge ${levelBadgeClass}">${unit.level}</span>`;
 
     // 根据级别设置不同的样式
-    const itemClass = level === 0 ? 'unit-tree-item base-item' : 
-                     level === 1 ? 'unit-tree-item org-item' : 
+    const itemClass = level === 0 ? 'unit-tree-item military-item' : 
+                     level === 1 ? 'unit-tree-item theater-item' : 
+                     level === 2 ? 'unit-tree-item base-item' : 
+                     level === 3 ? 'unit-tree-item org-item' : 
                      'unit-tree-item basic-item';
 
     return `
@@ -209,7 +220,7 @@ function editUnit(unitId) {
     // 填充表单数据
     document.getElementById('unitName').value = unit.name;
     document.getElementById('unitLevel').value = unit.level;
-    document.getElementById('parentUnit').value = unit.parentId || '';
+    document.getElementById('parentUnit').value = unit.parentId ? unit.parentId.toString() : '';
     document.getElementById('unitLocation').value = unit.location;
     document.getElementById('unitDistance').value = unit.distance || '';
     document.getElementById('unitPersonnel').value = unit.personnel || '';
@@ -269,7 +280,7 @@ function saveUnit() {
         if (unit) {
             unit.name = unitName;
             unit.level = unitLevel;
-            unit.parentId = parentId || null;
+            unit.parentId = parentId ? parseInt(parentId) : null;
             unit.location = location;
             unit.distance = distance;
             unit.personnel = personnel;
@@ -284,7 +295,7 @@ function saveUnit() {
             id: Date.now(),
             name: unitName,
             level: unitLevel,
-            parentId: parentId || null,
+            parentId: parentId ? parseInt(parentId) : null,
             hierarchy: [],
             location: location,
             distance: distance,

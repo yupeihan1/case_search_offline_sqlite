@@ -58,6 +58,8 @@ function updateAnalysisDropdowns() {
             container: hazardCategoryContainer,
             options: hazardProblemCategories,
             placeholder: '点击选择问题类别',
+            selectedText: '已选择 {count} 个问题类别',
+            previewLabel: '已选问题类别:',
             allowCustom: true,
             helpText: '点击选择问题类别，支持多选和自定义。',
             maxCustomLength: 20
@@ -88,6 +90,8 @@ function updateAnalysisDropdowns() {
                 container: categoryContainer,
                 options: categories,
                 placeholder: '请选择问题类别',
+                selectedText: '已选择 {count} 个问题类别',
+                previewLabel: '已选问题类别:',
                 allowCustom: true,
                 helpText: '点击选择问题类别，支持自定义。',
                 maxCustomLength: 20
@@ -107,6 +111,8 @@ function updateAnalysisDropdowns() {
                 container: levelContainer,
                 options: problemLevels,
                 placeholder: '请选择问题等级',
+                selectedText: '已选择 {count} 个问题等级',
+                previewLabel: '已选问题等级:',
                 allowCustom: false,
                 helpText: '点击选择问题等级，支持自定义。'
             });

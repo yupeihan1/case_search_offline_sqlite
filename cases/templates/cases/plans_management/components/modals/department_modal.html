@@ -15,10 +15,10 @@
                         </div>
                         <div class="col-md-6">
                             <label for="departmentLevel" class="form-label">级别 <span class="text-danger">*</span></label>
-                            <select class="form-control" id="departmentLevel" required>
+                            <select class="form-control" id="departmentLevel" required onchange="updateParentDepartmentOptions()">
+                                <option value="">请选择级别</option>
                                 <option value="部">部</option>
                                 <option value="处">处</option>
-                                <option value="科">科</option>
                             </select>
                         </div>
                         <div class="col-md-6">
@@ -28,20 +28,12 @@
                             </select>
                         </div>
                         <div class="col-md-6">
-                            <label for="departmentCode" class="form-label">部门代码</label>
-                            <input type="text" class="form-control" id="departmentCode" placeholder="请输入部门代码">
-                        </div>
-                        <div class="col-md-6">
                             <label for="departmentLeader" class="form-label">部门负责人</label>
                             <input type="text" class="form-control" id="departmentLeader" placeholder="请输入部门负责人">
                         </div>
                         <div class="col-md-6">
                             <label for="departmentPhone" class="form-label">联系电话</label>
                             <input type="text" class="form-control" id="departmentPhone" placeholder="请输入联系电话">
-                        </div>
-                        <div class="col-12">
-                            <label for="departmentDescription" class="form-label">部门描述</label>
-                            <textarea class="form-control" id="departmentDescription" rows="3" placeholder="请输入部门描述"></textarea>
                         </div>
                     </div>
                 </form>

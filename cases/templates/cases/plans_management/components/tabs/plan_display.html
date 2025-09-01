@@ -18,43 +18,57 @@
 <div class="filter-section" id="filterSection" style="display: none;">
     <h5 class="mb-3">筛选条件</h5>
     <div class="row g-3">
-        <div class="col-md-3">
-            <label for="filterStartDate" class="form-label">检查时间（开始）</label>
-            <input type="date" class="form-control" id="filterStartDate">
+        <!-- 第一行：计划检查时间 开始～终了 -->
+        <div class="col-md-6">
+            <label for="filterPlanStartDate" class="form-label">计划检查时间（开始）</label>
+            <input type="date" class="form-control" id="filterPlanStartDate">
         </div>
-        <div class="col-md-3">
-            <label for="filterEndDate" class="form-label">检查时间（结束）</label>
-            <input type="date" class="form-control" id="filterEndDate">
+        <div class="col-md-6">
+            <label for="filterPlanEndDate" class="form-label">计划检查时间（结束）</label>
+            <input type="date" class="form-control" id="filterPlanEndDate">
         </div>
-        <div class="col-md-3" id="leaderFilterFields">
+        
+        <!-- 第二行：实际检查时间 开始～终了 -->
+        <div class="col-md-6">
+            <label for="filterActualStartDate" class="form-label">实际检查时间（开始）</label>
+            <input type="date" class="form-control" id="filterActualStartDate">
+        </div>
+        <div class="col-md-6">
+            <label for="filterActualEndDate" class="form-label">实际检查时间（结束）</label>
+            <input type="date" class="form-control" id="filterActualEndDate">
+        </div>
+        
+        <!-- 第三行：首长检查字段 -->
+        <div class="col-md-4" id="leaderFilterFields">
             <label for="filterLeader" class="form-label">首长</label>
             <input type="text" class="form-control" id="filterLeader" placeholder="请输入首长姓名">
         </div>
-        <div class="col-md-3" id="leaderFilterFields2">
+        <div class="col-md-4" id="leaderFilterFields2">
             <label for="filterLeadDept" class="form-label">牵头处</label>
             <div id="filterLeadDeptContainer"></div>
         </div>
-        <div class="col-md-3" id="leaderFilterFields3">
+        <div class="col-md-4" id="leaderFilterFields3">
             <label for="filterAccompanyDept" class="form-label">陪同处</label>
             <div id="filterAccompanyDeptContainer"></div>
         </div>
-        <div class="col-md-3" id="dailyFilterFields" style="display: none;">
+        
+        <!-- 第三行：日常检查字段 -->
+        <div class="col-md-6" id="dailyFilterFields" style="display: none;">
             <label for="filterInspector" class="form-label">检查人</label>
             <input type="text" class="form-control" id="filterInspector" placeholder="请输入检查人姓名">
         </div>
-        <div class="col-md-3">
-            <label for="filterUnits" class="form-label">检查单位</label>
+        <div class="col-md-6" id="dailyFilterFields2" style="display: none;">
+            <label for="filterDept" class="form-label">检查处</label>
+            <div id="filterDeptContainer"></div>
+        </div>
+        
+        <!-- 第四行：受检单位 -->
+        <div class="col-12">
+            <label for="filterUnits" class="form-label">受检单位</label>
             <div id="filterUnitsContainer"></div>
         </div>
-        <div class="col-md-3">
-            <label for="filterCheckResult" class="form-label">检查结果</label>
-            <select class="form-control" id="filterCheckResult">
-                <option value="">全部结果</option>
-                <option value="优秀">优秀</option>
-                <option value="良好">良好</option>
-                <option value="需改进">需改进</option>
-            </select>
-        </div>
+        
+        <!-- 操作按钮 -->
         <div class="col-12">
             <button type="button" class="btn btn-primary" onclick="performSearch()">
                 <i class="bi bi-search me-1" aria-hidden="true"></i>检索
@@ -72,50 +86,68 @@
         <div class="card">
             <div class="card-header bg-light">
                 <h6 class="mb-0">
-                    <i class="bi bi-graph-up me-2"></i>执行率统计
+                    <i class="bi bi-graph-up me-2"></i>计划统计
                 </h6>
             </div>
             <div class="card-body">
-                <div class="row">
-                    <div class="col-md-2">
+                <div class="row mb-3">
+                    <div class="col-md-3">
                         <div class="text-center">
-                            <div class="h4 mb-1" id="overallRate">--</div>
-                            <small class="text-muted">总体执行率</small>
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <div class="text-center">
-                            <div class="h4 mb-1" id="totalPlansCount">0</div>
+                            <div class="h5 mb-1" id="totalPlansCount">0</div>
                             <small class="text-muted">总计划数</small>
                         </div>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <div class="text-center">
-                            <div class="h4 mb-1" id="completedPlansCount">0</div>
+                            <div class="h5 mb-1" id="completedPlansCount">0</div>
                             <small class="text-muted">已完成计划</small>
                         </div>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <div class="text-center">
-                            <div class="h4 mb-1" id="totalPlannedUnits">0</div>
-                            <small class="text-muted">计划检查单位</small>
+                            <div class="h5 mb-1" id="incompletePlansCount">0</div>
+                            <small class="text-muted">未完成计划</small>
                         </div>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-3">
+                        <!-- 空白占位 -->
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
                         <div class="text-center">
-                            <div class="h4 mb-1" id="totalActualUnits">0</div>
-                            <small class="text-muted">实际检查单位</small>
+                            <div class="h5 mb-1" id="totalPlannedUnits">0</div>
+                            <small class="text-muted">计划受检单位数</small>
                         </div>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <div class="text-center">
-                            <div class="h6 mb-1">检查结果分布</div>
-                            <div class="d-flex justify-content-center gap-2">
-                                <span class="badge bg-success" id="excellentCount">0</span>
-                                <span class="badge bg-primary" id="goodCount">0</span>
-                                <span class="badge bg-warning" id="improveCount">0</span>
-                            </div>
+                            <div class="h5 mb-1" id="totalActualUnits">0</div>
+                            <small class="text-muted">实际受检单位数</small>
                         </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="text-center">
+                            <div class="h5 mb-1" id="totalOffPlanUnits">0</div>
+                            <small class="text-muted">偏离单位数</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="text-center">
+                            <div class="h5 mb-1" id="totalIssuesCount">0</div>
+                            <small class="text-muted">问题总数</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <small class="text-muted">
+                            <i class="bi bi-info-circle me-1"></i>
+                            执行率计算规则：<br>
+                            计划执行率 = |实际受检单位∩计划受检单位| / |计划受检单位| × 100% <br>
+                            实际执行率 = |实际受检单位| / |计划受检单位| × 100% <br>
+                            计划偏移率 = |实际受检单位 / 计划受检单位| / |计划受检单位| × 100%
+                        </small>
                     </div>
                 </div>
             </div>

@@ -117,7 +117,7 @@ function generateHierarchyPath(unit) {
     let current = unit;
     
     while (current.parentId) {
-        const parent = unitData.find(u => u.id == current.parentId);
+        const parent = unitData.find(u => u.id === current.parentId);
         if (parent) {
             path.unshift(parent.name);
             current = parent;
@@ -131,6 +131,8 @@ function generateHierarchyPath(unit) {
 
 // 重建单位层级结构
 function rebuildUnitHierarchy() {
+    console.log('开始重建单位层级结构，当前单位数量:', unitData.length);
+    
     // 清空所有子单位
     unitData.forEach(unit => {
         unit.children = [];
@@ -140,10 +142,16 @@ function rebuildUnitHierarchy() {
     // 重新构建层级关系
     unitData.forEach(unit => {
         if (unit.parentId) {
-            const parent = unitData.find(u => u.id == unit.parentId);
+            console.log(`单位 ${unit.name} (ID: ${unit.id}) 的上级ID: ${unit.parentId}, 类型: ${typeof unit.parentId}`);
+            const parent = unitData.find(u => u.id === unit.parentId);
             if (parent) {
                 parent.children.push(unit);
+                console.log(`成功将 ${unit.name} 添加到 ${parent.name} 的子单位中`);
+            } else {
+                console.log(`未找到ID为 ${unit.parentId} 的上级单位`);
             }
+        } else {
+            console.log(`单位 ${unit.name} (ID: ${unit.id}) 没有上级单位`);
         }
     });
 
@@ -151,6 +159,8 @@ function rebuildUnitHierarchy() {
     unitData.forEach(unit => {
         unit.hierarchy = generateHierarchyPath(unit);
     });
+    
+    console.log('单位层级结构重建完成');
 }
 
 // 重建部门层级结构
@@ -163,7 +173,7 @@ function rebuildDepartmentHierarchy() {
     // 重新构建层级关系
     departmentData.forEach(dept => {
         if (dept.parentId) {
-            const parent = departmentData.find(d => d.id == dept.parentId);
+            const parent = departmentData.find(d => d.id === dept.parentId);
             if (parent) {
                 parent.children.push(dept);
             }
@@ -182,9 +192,56 @@ function updateParentUnitOptions() {
     parentSelect.innerHTML = '<option value="">无上级单位</option>';
     
     // 根据当前级别添加合适的上级单位选项
-    if (currentLevel === '机关') {
-        // 机关只能选择基地作为上级
+    if (currentLevel === '军种') {
+        // 军种没有上级单位
+        return;
+    } else if (currentLevel === '战区') {
+        // 战区可以选择军种作为上级
+        const militaryUnits = unitData.filter(u => u.level === '军种');
+        militaryUnits.forEach(unit => {
+            const option = document.createElement('option');
+            option.value = unit.id;
+            option.textContent = unit.name;
+            parentSelect.appendChild(option);
+        });
+    } else if (currentLevel === '基地') {
+        // 基地可以选择军种或战区作为上级
+        const militaryUnits = unitData.filter(u => u.level === '军种');
+        const theaterUnits = unitData.filter(u => u.level === '战区');
+        
+        militaryUnits.forEach(unit => {
+            const option = document.createElement('option');
+            option.value = unit.id;
+            option.textContent = unit.name;
+            parentSelect.appendChild(option);
+        });
+        
+        theaterUnits.forEach(unit => {
+            const option = document.createElement('option');
+            option.value = unit.id;
+            option.textContent = unit.name;
+            parentSelect.appendChild(option);
+        });
+    } else if (currentLevel === '机关') {
+        // 机关可以选择军种、战区或基地作为上级
+        const militaryUnits = unitData.filter(u => u.level === '军种');
+        const theaterUnits = unitData.filter(u => u.level === '战区');
         const baseUnits = unitData.filter(u => u.level === '基地');
+        
+        militaryUnits.forEach(unit => {
+            const option = document.createElement('option');
+            option.value = unit.id;
+            option.textContent = unit.name;
+            parentSelect.appendChild(option);
+        });
+        
+        theaterUnits.forEach(unit => {
+            const option = document.createElement('option');
+            option.value = unit.id;
+            option.textContent = unit.name;
+            parentSelect.appendChild(option);
+        });
+        
         baseUnits.forEach(unit => {
             const option = document.createElement('option');
             option.value = unit.id;
@@ -192,8 +249,33 @@ function updateParentUnitOptions() {
             parentSelect.appendChild(option);
         });
     } else if (currentLevel === '基层') {
-        // 基层可以选择机关作为上级
+        // 基层可以选择军种、战区、基地或机关作为上级
+        const militaryUnits = unitData.filter(u => u.level === '军种');
+        const theaterUnits = unitData.filter(u => u.level === '战区');
+        const baseUnits = unitData.filter(u => u.level === '基地');
         const orgUnits = unitData.filter(u => u.level === '机关');
+        
+        militaryUnits.forEach(unit => {
+            const option = document.createElement('option');
+            option.value = unit.id;
+            option.textContent = unit.name;
+            parentSelect.appendChild(option);
+        });
+        
+        theaterUnits.forEach(unit => {
+            const option = document.createElement('option');
+            option.value = unit.id;
+            option.textContent = unit.name;
+            parentSelect.appendChild(option);
+        });
+        
+        baseUnits.forEach(unit => {
+            const option = document.createElement('option');
+            option.value = unit.id;
+            option.textContent = unit.name;
+            parentSelect.appendChild(option);
+        });
+        
         orgUnits.forEach(unit => {
             const option = document.createElement('option');
             option.value = unit.id;
@@ -218,15 +300,6 @@ function updateParentDepartmentOptions() {
         // 处只能选择部作为上级
         const buDepartments = departmentData.filter(d => d.level === '部');
         buDepartments.forEach(dept => {
-            const option = document.createElement('option');
-            option.value = dept.id;
-            option.textContent = dept.name;
-            parentSelect.appendChild(option);
-        });
-    } else if (currentLevel === '科') {
-        // 科可以选择处作为上级
-        const chuDepartments = departmentData.filter(d => d.level === '处');
-        chuDepartments.forEach(dept => {
             const option = document.createElement('option');
             option.value = dept.id;
             option.textContent = dept.name;

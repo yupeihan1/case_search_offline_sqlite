@@ -9,11 +9,24 @@
             <div class="modal-body">
                 <form id="infoInputForm">
                     <div class="row g-3">
-                        <div class="col-md-6">
+                        <!-- 第一行：实际执行时间 -->
+                        <div class="col-12">
                             <label for="actualDate" class="form-label">实际执行时间 <span class="text-danger">*</span></label>
                             <input type="date" class="form-control" id="actualDate" required>
                         </div>
-                        <div class="col-md-6" id="leaderFields">
+                        
+                        <!-- 日常检查布局 -->
+                        <div class="col-md-6" id="dailyFields" style="display: none;">
+                            <label for="actualDept" class="form-label">检查处 <span class="text-danger">*</span></label>
+                            <div id="actualDeptContainer"></div>
+                        </div>
+                        <div class="col-md-6" id="dailyFields2" style="display: none;">
+                            <label for="actualInspector" class="form-label">检查人 <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="actualInspector" required>
+                        </div>
+                        
+                        <!-- 首长检查布局 -->
+                        <div class="col-12" id="leaderFields">
                             <label for="actualLeader" class="form-label">首长 <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="actualLeader" required>
                         </div>
@@ -25,22 +38,21 @@
                             <label for="actualAccompanyDept" class="form-label">陪同处</label>
                             <div id="actualAccompanyDeptContainer"></div>
                         </div>
-                        <div class="col-md-6" id="dailyFields" style="display: none;">
-                            <label for="actualInspector" class="form-label">检查人 <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="actualInspector" required>
-                        </div>
+                        
+                        <!-- 受检单位 -->
                         <div class="col-12">
-                            <label for="actualUnits" class="form-label">检查单位 <span class="text-danger">*</span></label>
+                            <label for="actualUnits" class="form-label">受检单位 <span class="text-danger">*</span></label>
                             <div id="actualUnitsContainer"></div>
                         </div>
+                        
+                        <!-- 发现问题数｜备注 -->
                         <div class="col-md-6">
-                            <label for="checkResult" class="form-label">检查结果</label>
-                            <select class="form-control" id="checkResult">
-                                <option value="">请选择检查结果</option>
-                                <option value="优秀">优秀</option>
-                                <option value="良好">良好</option>
-                                <option value="需改进">需改进</option>
-                            </select>
+                            <label for="issueCount" class="form-label">发现问题数</label>
+                            <input type="number" class="form-control" id="issueCount" min="0" placeholder="请输入发现的问题数量">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="remarks" class="form-label">备注</label>
+                            <input type="text" class="form-control" id="remarks" placeholder="请输入备注信息">
                         </div>
                     </div>
                 </form>

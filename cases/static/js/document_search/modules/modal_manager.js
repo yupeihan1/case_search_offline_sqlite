@@ -285,6 +285,8 @@ function openUpdateDocumentModal(docId) {
                     options: tagOptions,
                     selectedTags: initialSelectedTags, // 在创建时直接设置选中的标签
                     placeholder: '请选择标签',
+                    selectedText: '已选择 {count} 个标签',
+                    previewLabel: '已选标签:',
                     helpText: '点击选择标签，支持自定义标签'
                 });
                 console.log('Update tags component initialized successfully with selected tags');

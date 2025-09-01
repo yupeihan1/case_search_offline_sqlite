@@ -25,8 +25,8 @@ class ExecutionRateCalculator {
      * 计算执行率
      * 执行率公式：|A ∩ P| / |P| × 100%
      * 
-     * @param {Array} plannedUnits 计划检查单位集合
-     * @param {Array} actualUnits 实际检查单位集合
+     * @param {Array} plannedUnits 计划受检单位集合
+     * @param {Array} actualUnits 实际受检单位集合
      * @returns {Object} 计算结果对象
      * @returns {number} returns.rate 执行率数值（0-100）
      * @returns {string} returns.displayText 格式化后的显示文本

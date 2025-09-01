@@ -1,0 +1,373 @@
+/**
+ * 联动下拉列表组件样式
+ */
+
+/* 联动下拉容器样式 */
+.cascading-dropdown-container {
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+/* 选择路径显示样式 */
+.cascading-selection-path {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 0.375rem;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    font-size: 14px;
+    color: #6c757d;
+}
+
+.cascading-selection-path .path-item {
+    color: #0d6efd;
+    font-weight: 500;
+}
+
+.cascading-selection-path .path-placeholder {
+    color: #6c757d;
+    font-style: italic;
+}
+
+.cascading-selection-path .bi-chevron-right {
+    margin: 0 0.5rem;
+    color: #6c757d;
+    font-size: 12px;
+}
+
+/* 联动下拉组件组样式 */
+.cascading-dropdowns {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+/* 单个下拉项样式 */
+.cascading-dropdown-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.cascading-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #495057;
+    margin-bottom: 0.5rem;
+}
+
+/* 联动下拉组件样式 */
+.cascading-dropdown {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.cascading-dropdown-toggle {
+    width: 100%;
+    padding: 0.375rem 0.75rem;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 0.375rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    text-align: left;
+    position: relative;
+    cursor: pointer;
+}
+
+.cascading-dropdown-toggle:hover:not(.disabled) {
+    color: #212529;
+    background-color: #f8f9fa;
+    border-color: #86b7fe;
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+.cascading-dropdown-toggle.active {
+    border-color: #86b7fe;
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+.cascading-dropdown-toggle.disabled {
+    background-color: #e9ecef;
+    color: #6c757d;
+    cursor: not-allowed;
+    opacity: 0.65;
+}
+
+.cascading-dropdown-toggle::after {
+    content: '';
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid #6c757d;
+    transition: transform 0.2s ease;
+}
+
+.cascading-dropdown-toggle.active::after {
+    transform: translateY(-50%) rotate(180deg);
+}
+
+.cascading-dropdown-toggle.disabled::after {
+    border-top-color: #6c757d;
+    opacity: 0.5;
+}
+
+/* 联动下拉菜单样式 */
+.cascading-dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    display: none;
+    min-width: 10rem;
+    padding: 0.5rem 0;
+    margin: 0.125rem 0 0;
+    font-size: 14px;
+    color: #212529;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0, 0, 0, 0.175);
+    border-radius: 0.375rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.175);
+    max-height: 300px;
+    overflow-y: auto;
+    width: 100%;
+}
+
+.cascading-dropdown-menu.show {
+    display: block;
+}
+
+/* 联动下拉选项样式 */
+.cascading-dropdown-item {
+    display: block;
+    width: 100%;
+    padding: 0.25rem 1rem;
+    clear: both;
+    font-weight: 400;
+    font-size: 14px;
+    color: #212529;
+    text-align: inherit;
+    text-decoration: none;
+    white-space: nowrap;
+    background-color: transparent;
+    border: 0;
+    cursor: pointer;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out;
+}
+
+.cascading-dropdown-item:hover,
+.cascading-dropdown-item:focus {
+    color: #1e2125;
+    background-color: #e9ecef;
+}
+
+.cascading-dropdown-item:active {
+    color: #fff;
+    background-color: #0d6efd;
+}
+
+.cascading-dropdown-item.selected {
+    background-color: #007bff !important;
+    color: #ffffff !important;
+}
+
+.cascading-dropdown-item.selected:hover {
+    background-color: #0056b3 !important;
+    color: #ffffff !important;
+}
+
+/* 自定义选项样式 */
+.cascading-dropdown-item.custom-option {
+    color: #28a745;
+    font-style: italic;
+}
+
+.cascading-dropdown-item.custom-option:hover {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+/* 搜索框样式 */
+.cascading-search-input {
+    border: none !important;
+    box-shadow: none !important;
+    font-size: 14px;
+}
+
+.cascading-search-input:focus {
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+.cascading-search-input::placeholder {
+    color: #6c757d;
+    font-size: 14px;
+}
+
+/* 搜索框输入组样式 */
+.cascading-dropdown .input-group-text {
+    background-color: transparent;
+    border: none;
+    color: #6c757d;
+    font-size: 14px;
+}
+
+.cascading-dropdown .input-group {
+    border: none;
+}
+
+/* 自定义输入框样式 */
+.custom-cascading-input {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    font-size: 14px;
+}
+
+.custom-cascading-input:focus {
+    border-color: #86b7fe;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+/* 分隔线样式 */
+.cascading-dropdown-divider {
+    height: 0;
+    margin: 0.5rem 0;
+    overflow: hidden;
+    border-top: 1px solid rgba(0, 0, 0, 0.175);
+}
+
+/* 选项容器样式 */
+.cascading-options-container {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+/* 无结果提示样式 */
+.no-results-message {
+    font-style: italic;
+    color: #6c757d;
+}
+
+/* 当前选择显示样式 */
+.cascading-current-selection {
+    display: none; /* 隐藏当前选择显示 */
+    background-color: #e7f3ff;
+    border: 1px solid #b3d9ff;
+    border-radius: 0.375rem;
+    padding: 0.75rem;
+    font-size: 14px;
+    color: #0d6efd;
+}
+
+.cascading-current-selection strong {
+    color: #0a58ca;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .cascading-dropdowns {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+    
+    .cascading-dropdown-menu {
+        max-height: 250px;
+    }
+    
+    .cascading-dropdown-item {
+        padding: 0.375rem 1rem;
+        font-size: 14px;
+    }
+    
+    .cascading-selection-path {
+        padding: 0.5rem;
+        font-size: 13px;
+    }
+}
+
+/* 动画效果 */
+.cascading-dropdown-menu {
+    animation: fadeInDown 0.2s ease-out;
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 滚动条样式 */
+.cascading-dropdown-menu::-webkit-scrollbar {
+    width: 6px;
+}
+
+.cascading-dropdown-menu::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.cascading-dropdown-menu::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 3px;
+}
+
+.cascading-dropdown-menu::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+/* 加载状态样式 */
+.cascading-dropdown.loading .cascading-dropdown-toggle::after {
+    content: '';
+    width: 16px;
+    height: 16px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #0d6efd;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: translateY(-50%) rotate(0deg); }
+    100% { transform: translateY(-50%) rotate(360deg); }
+}
+
+/* 错误状态样式 */
+.cascading-dropdown.error .cascading-dropdown-toggle {
+    border-color: #dc3545;
+    color: #dc3545;
+}
+
+.cascading-dropdown.error .cascading-dropdown-toggle:focus {
+    box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
+}
+
+/* 成功状态样式 */
+.cascading-dropdown.success .cascading-dropdown-toggle {
+    border-color: #198754;
+    color: #198754;
+}
+
+.cascading-dropdown.success .cascading-dropdown-toggle:focus {
+    box-shadow: 0 0 0 0.25rem rgba(25, 135, 84, 0.25);
+}

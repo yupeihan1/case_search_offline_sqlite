@@ -42,6 +42,20 @@ document.addEventListener('DOMContentLoaded', function() {
     // 初始化查询单位下拉组件
     initQueryUnitDropdown();
     
+    // 初始化时隐藏导出Excel按钮
+    if (typeof updateExportExcelButtonVisibility === 'function') {
+        updateExportExcelButtonVisibility();
+    }
+    
+    // 监听tab切换事件，清空表单记忆
+    const dataManagementTabs = document.getElementById('dataManagementTabs');
+    if (dataManagementTabs) {
+        dataManagementTabs.addEventListener('shown.bs.tab', function(event) {
+            // 当tab切换时，清空表单记忆
+            clearFormMemory();
+        });
+    }
+    
     // 数据录入表单提交事件
     const form = document.getElementById('dataEntryForm');
     if (form) {
@@ -72,13 +86,22 @@ document.addEventListener('DOMContentLoaded', function() {
             setTimeout(() => {
                 document.getElementById('queryResults').style.display = 'none';
                 
-                // 安全地清理下拉组件选择
-                if (typeof tagsDropdownManager !== 'undefined') {
-                    tagsDropdownManager.clearSelectedTags('queryOtherProblemCategory');
-                    tagsDropdownManager.clearSelectedTags('queryProblemLevel');
+                // 安全地清理联动下拉组件选择
+                if (typeof cascadingDropdownManager !== 'undefined') {
+                    cascadingDropdownManager.clearCascadingSelections('queryUnit');
+                } else if (typeof tagsDropdownManager !== 'undefined') {
+                    // 回退到标签下拉组件
                     tagsDropdownManager.clearSelectedTags('queryUnit');
-                    tagsDropdownManager.clearSelectedTags('queryProblemCategory');
                 }
+                
+                // 清空单选下拉框
+                const queryProblemCategory = document.getElementById('queryProblemCategory');
+                const queryOtherProblemCategory = document.getElementById('queryOtherProblemCategory');
+                const queryProblemLevel = document.getElementById('queryProblemLevel');
+                
+                if (queryProblemCategory) queryProblemCategory.value = '';
+                if (queryOtherProblemCategory) queryOtherProblemCategory.value = '';
+                if (queryProblemLevel) queryProblemLevel.value = '';
                 
                 // 清理分页器和查询结果
                 if (queryPagination) {
@@ -86,6 +109,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     queryPagination = null;
                 }
                 currentQueryResults = [];
+                
+                // 更新导出Excel按钮的显示状态
+                if (typeof updateExportExcelButtonVisibility === 'function') {
+                    updateExportExcelButtonVisibility();
+                }
             }, 100);
         });
     }

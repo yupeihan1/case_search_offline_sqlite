@@ -15,7 +15,10 @@
                         </div>
                         <div class="col-md-6">
                             <label for="unitLevel" class="form-label">级别 <span class="text-danger">*</span></label>
-                            <select class="form-control" id="unitLevel" required>
+                            <select class="form-control" id="unitLevel" required onchange="updateParentUnitOptions()">
+                                <option value="">请选择级别</option>
+                                <option value="军种">军种</option>
+                                <option value="战区">战区</option>
                                 <option value="基地">基地</option>
                                 <option value="机关">机关</option>
                                 <option value="基层">基层</option>

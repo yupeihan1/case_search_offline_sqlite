@@ -16,17 +16,19 @@ function showInfoInputModal(planId, modalType) {
     
     // 根据检查类型显示/隐藏相应字段
     const leaderFields = document.querySelectorAll('#leaderFields, #leaderFields2, #leaderFields3');
-    const dailyFields = document.querySelectorAll('#dailyFields');
+    const dailyFields = document.querySelectorAll('#dailyFields, #dailyFields2');
     
     if (currentCheckType === 'leader') {
         leaderFields.forEach(field => field.style.display = 'block');
         dailyFields.forEach(field => field.style.display = 'none');
         document.getElementById('actualInspector').required = false;
+        document.getElementById('actualDept').required = false;
         document.getElementById('actualLeader').required = true;
     } else {
         leaderFields.forEach(field => field.style.display = 'none');
         dailyFields.forEach(field => field.style.display = 'block');
         document.getElementById('actualInspector').required = true;
+        // 检查处字段现在是标签下拉组件，不需要设置required属性
         document.getElementById('actualLeader').required = false;
     }
     
@@ -39,6 +41,7 @@ function showInfoInputModal(planId, modalType) {
         tagsDropdownManager.clearSelectedTags('actualUnits');
         tagsDropdownManager.clearSelectedTags('actualLeadDept');
         tagsDropdownManager.clearSelectedTags('actualAccompanyDept');
+        tagsDropdownManager.clearSelectedTags('actualDept');
     }
     
     // 显示模态框
@@ -77,16 +80,25 @@ function loadPlanData(planId) {
         if (plan.actualInspector) {
             document.getElementById('actualInspector').value = plan.actualInspector;
         }
+        if (plan.actualDept) {
+            tagsDropdownManager.setSelectedTags('actualDept', [plan.actualDept]);
+        }
     }
     
     if (plan.actualUnits) {
         tagsDropdownManager.setSelectedTags('actualUnits', plan.actualUnits);
     }
     
-    if (plan.checkResult) {
-        document.getElementById('checkResult').value = plan.checkResult;
+    if (plan.issueCount !== undefined) {
+        document.getElementById('issueCount').value = plan.issueCount;
     } else {
-        document.getElementById('checkResult').value = '';
+        document.getElementById('issueCount').value = '';
+    }
+    
+    if (plan.remarks) {
+        document.getElementById('remarks').value = plan.remarks;
+    } else {
+        document.getElementById('remarks').value = '';
     }
 }
 
@@ -109,19 +121,21 @@ function saveInfo() {
         }
     } else {
         const actualInspector = document.getElementById('actualInspector').value;
-        if (!actualInspector) {
-            alert('请填写检查人');
+        const actualDept = document.getElementById('actualDept').value;
+        if (!actualInspector || !actualDept) {
+            alert('请填写检查人和检查处');
             return;
         }
     }
     
     const actualUnits = tagsDropdownManager.getSelectedTags('actualUnits');
     if (actualUnits.length === 0) {
-        alert('请选择检查单位');
+        alert('请选择受检单位');
         return;
     }
     
-    const checkResult = document.getElementById('checkResult').value;
+    const issueCount = document.getElementById('issueCount').value;
+    const remarks = document.getElementById('remarks').value;
     
     // 保存数据
     if (currentPlanId) {
@@ -130,7 +144,8 @@ function saveInfo() {
         if (plan) {
             plan.actualDate = actualDate;
             plan.actualUnits = actualUnits;
-            plan.checkResult = checkResult;
+            plan.issueCount = issueCount ? parseInt(issueCount) : null;
+            plan.remarks = remarks;
             
             if (currentCheckType === 'leader') {
                 plan.actualLeader = document.getElementById('actualLeader').value;
@@ -139,6 +154,8 @@ function saveInfo() {
                 plan.actualAccompanyDept = tagsDropdownManager.getSelectedTags('actualAccompanyDept');
             } else {
                 plan.actualInspector = document.getElementById('actualInspector').value;
+                const selectedDept = tagsDropdownManager.getSelectedTags('actualDept');
+                plan.actualDept = selectedDept.length > 0 ? selectedDept[0] : null;
             }
         }
     }
@@ -221,7 +238,8 @@ function confirmStopPlan(planId) {
     // 设置计划为停止状态：执行率为0%
     plan.actualDate = new Date().toISOString().split('T')[0]; // 设置为今天
     plan.actualUnits = []; // 空数组表示没有检查任何单位
-    plan.checkResult = ''; // 设置检查结果为空白
+    plan.issueCount = null; // 清空发现问题数
+    plan.remarks = ''; // 清空备注
     
     // 根据计划类型设置其他必要字段
     if (plan.type === 'leader') {
@@ -230,6 +248,7 @@ function confirmStopPlan(planId) {
         plan.actualAccompanyDept = plan.accompanyDept;
     } else {
         plan.actualInspector = plan.inspector;
+        plan.actualDept = plan.dept || ''; // 假设计划中有dept字段，如果没有则为空字符串
     }
 
     // 关闭模态框

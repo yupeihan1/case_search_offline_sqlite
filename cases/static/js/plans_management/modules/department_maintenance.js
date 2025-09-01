@@ -87,10 +87,6 @@ function generateDepartmentNodeHtml(dept, level, hasChildren) {
                     <div class="department-meta">
                         <span class="me-3"><i class="bi bi-person me-1"></i>${dept.leader || '未设置'}</span>
                         <span class="me-3"><i class="bi bi-telephone me-1"></i>${dept.phone || '未设置'}</span>
-                        <span class="me-3"><i class="bi bi-hash me-1"></i>${dept.code || '未设置'}</span>
-                    </div>
-                    <div class="department-description">
-                        <small class="text-muted">${dept.description || '暂无描述'}</small>
                     </div>
                 </div>
                 <div class="department-actions">
@@ -153,11 +149,9 @@ function editDepartment(deptId) {
     // 填充表单数据
     document.getElementById('departmentName').value = dept.name;
     document.getElementById('departmentLevel').value = dept.level;
-    document.getElementById('parentDepartment').value = dept.parentId || '';
-    document.getElementById('departmentCode').value = dept.code || '';
+    document.getElementById('parentDepartment').value = dept.parentId ? dept.parentId.toString() : '';
     document.getElementById('departmentLeader').value = dept.leader || '';
     document.getElementById('departmentPhone').value = dept.phone || '';
-    document.getElementById('departmentDescription').value = dept.description || '';
     
     // 更新上级部门选项
     updateParentDepartmentOptions();
@@ -197,13 +191,16 @@ function saveDepartment() {
     const deptName = document.getElementById('departmentName').value.trim();
     const deptLevel = document.getElementById('departmentLevel').value;
     const parentId = document.getElementById('parentDepartment').value;
-    const code = document.getElementById('departmentCode').value.trim();
     const leader = document.getElementById('departmentLeader').value.trim();
     const phone = document.getElementById('departmentPhone').value.trim();
-    const description = document.getElementById('departmentDescription').value.trim();
 
     if (!deptName) {
         alert('请输入部门名称');
+        return;
+    }
+
+    if (!deptLevel) {
+        alert('请选择部门级别');
         return;
     }
 
@@ -213,11 +210,9 @@ function saveDepartment() {
         if (dept) {
             dept.name = deptName;
             dept.level = deptLevel;
-            dept.parentId = parentId || null;
-            dept.code = code;
+            dept.parentId = parentId ? parseInt(parentId) : null;
             dept.leader = leader;
             dept.phone = phone;
-            dept.description = description;
             
             // 重新生成层级结构
             rebuildDepartmentHierarchy();
@@ -228,11 +223,9 @@ function saveDepartment() {
             id: Date.now(),
             name: deptName,
             level: deptLevel,
-            parentId: parentId || null,
-            code: code,
+            parentId: parentId ? parseInt(parentId) : null,
             leader: leader,
             phone: phone,
-            description: description,
             children: []
         };
         

@@ -77,16 +77,24 @@
     box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
 }
 
-.unit-tree-item.base-item {
+.unit-tree-item.military-item {
     border-left: 4px solid #0d6efd;
 }
 
-.unit-tree-item.org-item {
+.unit-tree-item.theater-item {
     border-left: 4px solid #198754;
 }
 
-.unit-tree-item.basic-item {
+.unit-tree-item.base-item {
     border-left: 4px solid #fd7e14;
+}
+
+.unit-tree-item.org-item {
+    border-left: 4px solid #ffc107;
+}
+
+.unit-tree-item.basic-item {
+    border-left: 4px solid #dc3545;
 }
 
 .unit-tree-content {
@@ -98,7 +106,7 @@
 
 .unit-tree-toggle {
     cursor: pointer;
-    font-size: 1.2rem;
+    font-size: 16px;
     color: #6c757d;
     transition: transform 0.2s ease-in-out;
 }
@@ -117,7 +125,7 @@
 }
 
 .unit-meta {
-    font-size: 0.875rem;
+    font-size: 14px;
     color: #6c757d;
 }
 
@@ -133,7 +141,7 @@
     padding: 0.25rem 0.5rem;
     background: #f8f9fa;
     border-radius: 0.25rem;
-    font-size: 0.875rem;
+    font-size: 14px;
 }
 
 .check-tooltip {
@@ -145,7 +153,7 @@
     color: #fff;
     padding: 0.5rem;
     border-radius: 0.25rem;
-    font-size: 0.75rem;
+    font-size: 12px;
     white-space: nowrap;
     z-index: 1000;
     opacity: 0;
@@ -171,25 +179,35 @@
 .unit-level-badge {
     display: inline-block;
     padding: 0.25rem 0.5rem;
-    font-size: 0.75rem;
+    font-size: 12px;
     font-weight: 600;
     border-radius: 0.25rem;
     margin-left: 0.5rem;
 }
 
-.unit-level-badge.base {
+.unit-level-badge.military {
     background-color: #e3f2fd;
     color: #1976d2;
 }
 
-.unit-level-badge.org {
+.unit-level-badge.theater {
     background-color: #e8f5e8;
     color: #2e7d32;
 }
 
-.unit-level-badge.basic {
+.unit-level-badge.base {
     background-color: #fff3e0;
     color: #f57c00;
+}
+
+.unit-level-badge.org {
+    background-color: #fff8e1;
+    color: #f57c00;
+}
+
+.unit-level-badge.basic {
+    background-color: #ffebee;
+    color: #d32f2f;
 }
 
 /* 部门树形结构样式 */
@@ -213,10 +231,6 @@
     border-left: 4px solid #198754;
 }
 
-.department-tree-item.dept-item-ke {
-    border-left: 4px solid #fd7e14;
-}
-
 .department-tree-content {
     display: flex;
     align-items: center;
@@ -226,7 +240,7 @@
 
 .department-tree-toggle {
     cursor: pointer;
-    font-size: 1.2rem;
+    font-size: 16px;
     color: #6c757d;
     transition: transform 0.2s ease-in-out;
 }
@@ -245,13 +259,13 @@
 }
 
 .department-meta {
-    font-size: 0.875rem;
+    font-size: 14px;
     color: #6c757d;
     margin-bottom: 0.5rem;
 }
 
 .department-description {
-    font-size: 0.875rem;
+    font-size: 14px;
     color: #6c757d;
 }
 
@@ -274,7 +288,7 @@
 .dept-level-badge {
     display: inline-block;
     padding: 0.25rem 0.5rem;
-    font-size: 0.75rem;
+    font-size: 12px;
     font-weight: 600;
     border-radius: 0.25rem;
     margin-left: 0.5rem;
@@ -290,11 +304,6 @@
     color: #2e7d32;
 }
 
-.dept-level-badge.dept-level-ke {
-    background-color: #fff3e0;
-    color: #f57c00;
-}
-
 /* 生成的计划项样式 */
 .generated-plan-item {
     background: #fff;
@@ -306,8 +315,21 @@
 
 .generated-plan-item .form-label {
     font-weight: 600;
-    font-size: 0.875rem;
+    font-size: 14px;
     margin-bottom: 0.5rem;
+}
+
+/* 时间段字段非活性样式 */
+.generated-plan-item input[readonly] {
+    background-color: #f8f9fa !important;
+    color: #6c757d !important;
+    border-color: #dee2e6 !important;
+    cursor: not-allowed;
+}
+
+.generated-plan-item input[readonly]:focus {
+    box-shadow: none !important;
+    border-color: #dee2e6 !important;
 }
 
 /* 执行率统计样式 */
@@ -371,3 +393,5 @@
         padding-top: 100px;
     }
 }
+
+

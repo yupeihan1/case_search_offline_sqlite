@@ -75,14 +75,11 @@ function generatePlanItem(round, startDate, checkType) {
                 <div class="row">
                     <div class="col-md-2">
                         <label class="form-label">时间段</label>
-                        <input type="text" class="form-control" value="${startStr} 至 ${endStr}" readonly>
+                        <input type="text" class="form-control bg-light text-muted" value="${startStr} 至 ${endStr}" readonly style="color: #6c757d !important;">
                     </div>
                     <div class="col-md-2">
                         <label class="form-label">首长</label>
-                        <select class="form-control plan-leader" data-round="${round}">
-                            <option value="${leader}" selected>${leader}</option>
-                            ${leaders.map(l => `<option value="${l}">${l}</option>`).join('')}
-                        </select>
+                        <input type="text" class="form-control plan-leader" value="${leader}" data-round="${round}" placeholder="请输入首长姓名">
                     </div>
                     <div class="col-md-2">
                         <label class="form-label">牵头处</label>
@@ -99,11 +96,11 @@ function generatePlanItem(round, startDate, checkType) {
                         </select>
                     </div>
                     <div class="col-md-2">
-                        <label class="form-label">机关单位</label>
+                        <label class="form-label">机关</label>
                         <div class="plan-org-unit-container" data-round="${round}"></div>
                     </div>
                     <div class="col-md-2">
-                        <label class="form-label">基层单位</label>
+                        <label class="form-label">基层</label>
                         <div class="plan-basic-units-container" data-round="${round}"></div>
                     </div>
                 </div>
@@ -117,6 +114,7 @@ function generatePlanItem(round, startDate, checkType) {
         `;
     } else {
         const inspector = inspectors[(round - 1) % inspectors.length];
+        const dept = leadDepts[(round - 1) % leadDepts.length]; // 使用部门数据作为检查处
         const selectedOrgUnit = orgUnits[(round - 1) % orgUnits.length];
         const selectedBasicUnits = basicUnits.slice((round - 1) * 5 % basicUnits.length, ((round - 1) * 5 % basicUnits.length) + 5);
         if (selectedBasicUnits.length < 5) {
@@ -127,23 +125,27 @@ function generatePlanItem(round, startDate, checkType) {
         return `
             <div class="generated-plan-item">
                 <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <label class="form-label">时间段</label>
-                        <input type="text" class="form-control" value="${startStr} 至 ${endStr}" readonly>
+                        <input type="text" class="form-control bg-light text-muted" value="${startStr} 至 ${endStr}" readonly style="color: #6c757d !important;">
                     </div>
-                    <div class="col-md-3">
-                        <label class="form-label">检查人</label>
-                        <select class="form-control plan-inspector" data-round="${round}">
-                            <option value="${inspector}" selected>${inspector}</option>
-                            ${inspectors.map(i => `<option value="${i}">${i}</option>`).join('')}
+                    <div class="col-md-2">
+                        <label class="form-label">检查处</label>
+                        <select class="form-control plan-dept" data-round="${round}">
+                            <option value="${dept}" selected>${dept}</option>
+                            ${leadDepts.map(d => `<option value="${d}">${d}</option>`).join('')}
                         </select>
                     </div>
+                    <div class="col-md-2">
+                        <label class="form-label">检查人</label>
+                        <input type="text" class="form-control plan-inspector" value="${inspector}" data-round="${round}" placeholder="请输入检查人姓名">
+                    </div>
                     <div class="col-md-3">
-                        <label class="form-label">机关单位</label>
+                        <label class="form-label">机关</label>
                         <div class="plan-org-unit-container" data-round="${round}"></div>
                     </div>
                     <div class="col-md-3">
-                        <label class="form-label">基层单位</label>
+                        <label class="form-label">基层</label>
                         <div class="plan-basic-units-container" data-round="${round}"></div>
                     </div>
                 </div>
@@ -215,6 +217,7 @@ function confirmPlans() {
         } else {
             // 读取用户修改后的数据
             const inspectorInput = document.querySelector(`.plan-inspector[data-round="${i + 1}"]`);
+            const deptInput = document.querySelector(`.plan-dept[data-round="${i + 1}"]`);
             const focusPointInput = document.querySelector(`.plan-focus-point[data-round="${i + 1}"]`);
             
             // 读取标签下拉组件的值
@@ -222,6 +225,7 @@ function confirmPlans() {
             const basicUnits = tagsDropdownManager.getSelectedTags(`planBasicUnits${i + 1}`);
             
             newPlan.inspector = inspectorInput ? inspectorInput.value : '王参谋';
+            newPlan.dept = deptInput ? deptInput.value : '作战处';
             newPlan.units = [...orgUnits, ...basicUnits];
             newPlan.focusPoint = focusPointInput ? focusPointInput.value : '战备训练情况';
         }
@@ -241,6 +245,144 @@ function confirmPlans() {
     loadPlanList();
 }
 
+// 确认计划并导出
+function confirmPlansAndExport() {
+    const startDate = document.getElementById('startDate').value;
+    const rounds = document.getElementById('rounds').value;
+    const checkType = document.querySelector('input[name="createCheckType"]:checked').value;
+    
+    if (!startDate || !rounds) {
+        alert('请先生成计划');
+        return;
+    }
+    
+    // 先执行确认计划的逻辑
+    const start = new Date(startDate);
+    const plansToExport = [];
+    
+    for (let i = 0; i < rounds; i++) {
+        const planStart = new Date(start);
+        planStart.setDate(start.getDate() + i * 7);
+        
+        // 调整到周一
+        const dayOfWeek = planStart.getDay();
+        const daysToMonday = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
+        planStart.setDate(planStart.getDate() - daysToMonday);
+        
+        const planEnd = new Date(planStart);
+        planEnd.setDate(planStart.getDate() + 6);
+        
+        const planStartStr = planStart.toISOString().split('T')[0];
+        const planEndStr = planEnd.toISOString().split('T')[0];
+        
+        const newPlan = {
+            id: Date.now() + i, // 临时ID
+            type: checkType,
+            planStartDate: planStartStr,
+            planEndDate: planEndStr,
+            actualDate: null,
+            actualUnits: null
+        };
+        
+        if (checkType === 'leader') {
+            // 读取用户修改后的数据
+            const leaderInput = document.querySelector(`.plan-leader[data-round="${i + 1}"]`);
+            const leadDeptInput = document.querySelector(`.plan-lead-dept[data-round="${i + 1}"]`);
+            const accompanyDeptInput = document.querySelector(`.plan-accompany-dept[data-round="${i + 1}"]`);
+            const focusPointInput = document.querySelector(`.plan-focus-point[data-round="${i + 1}"]`);
+            
+            // 读取标签下拉组件的值
+            const orgUnits = tagsDropdownManager.getSelectedTags(`planOrgUnit${i + 1}`);
+            const basicUnits = tagsDropdownManager.getSelectedTags(`planBasicUnits${i + 1}`);
+            
+            newPlan.leader = leaderInput ? leaderInput.value : '张司令';
+            newPlan.leadDept = leadDeptInput ? leadDeptInput.value : '作战处';
+            newPlan.accompanyDept = accompanyDeptInput ? [accompanyDeptInput.value] : ['政治处'];
+            newPlan.units = [...orgUnits, ...basicUnits];
+            newPlan.focusPoint = focusPointInput ? focusPointInput.value : '战备训练情况';
+        } else {
+            // 读取用户修改后的数据
+            const inspectorInput = document.querySelector(`.plan-inspector[data-round="${i + 1}"]`);
+            const deptInput = document.querySelector(`.plan-dept[data-round="${i + 1}"]`);
+            const focusPointInput = document.querySelector(`.plan-focus-point[data-round="${i + 1}"]`);
+            
+            // 读取标签下拉组件的值
+            const orgUnits = tagsDropdownManager.getSelectedTags(`planOrgUnit${i + 1}`);
+            const basicUnits = tagsDropdownManager.getSelectedTags(`planBasicUnits${i + 1}`);
+            
+            newPlan.inspector = inspectorInput ? inspectorInput.value : '王参谋';
+            newPlan.dept = deptInput ? deptInput.value : '作战处';
+            newPlan.units = [...orgUnits, ...basicUnits];
+            newPlan.focusPoint = focusPointInput ? focusPointInput.value : '战备训练情况';
+        }
+        
+        planData.unshift(newPlan);
+        plansToExport.push(newPlan);
+    }
+    
+    // 导出计划到Excel
+    exportPlansToExcel(plansToExport, checkType);
+    
+    showSuccessMessage(`成功生成并确认 ${rounds} 个计划，并已导出CSV文件！`);
+    resetPlans();
+    
+    // 切换到初期显示tab页
+    const displayTab = document.getElementById('plan-display-tab');
+    const displayTabInstance = new bootstrap.Tab(displayTab);
+    displayTabInstance.show();
+    
+    // 重新加载计划列表
+    loadPlanList();
+}
+
+// 导出计划到CSV
+function exportPlansToExcel(plans, checkType) {
+    // 设置表头
+    const headers = checkType === 'leader' 
+        ? ['轮次', '检查类型', '时间段', '首长', '牵头处', '陪同处', '受检单位', '检查重点']
+        : ['轮次', '检查类型', '时间段', '检查处', '检查人', '受检单位', '检查重点'];
+    
+    // 构建CSV内容
+    let csvContent = '\ufeff'; // 添加BOM以支持中文
+    csvContent += headers.join(',') + '\n';
+    
+    // 添加数据行
+    plans.forEach((plan, index) => {
+        const rowData = [];
+        rowData.push(index + 1); // 轮次
+        rowData.push(checkType === 'leader' ? '首长检查' : '日常检查'); // 检查类型
+        rowData.push(`"${plan.planStartDate} 至 ${plan.planEndDate}"`); // 时间段
+        
+        if (checkType === 'leader') {
+            rowData.push(`"${plan.leader || ''}"`); // 首长
+            rowData.push(`"${plan.leadDept || ''}"`); // 牵头处
+            rowData.push(`"${Array.isArray(plan.accompanyDept) ? plan.accompanyDept.join('、') : plan.accompanyDept || ''}"`); // 陪同处
+        } else {
+            rowData.push(`"${plan.dept || ''}"`); // 检查处
+            rowData.push(`"${plan.inspector || ''}"`); // 检查人
+        }
+        
+        rowData.push(`"${Array.isArray(plan.units) ? plan.units.join('、') : plan.units || ''}"`); // 受检单位
+        rowData.push(`"${plan.focusPoint || ''}"`); // 检查重点
+        
+        csvContent += rowData.join(',') + '\n';
+    });
+    
+    // 生成文件名
+    const now = new Date();
+    const timestamp = now.toISOString().slice(0, 10).replace(/-/g, '');
+    const fileName = `检查计划_${checkType === 'leader' ? '首长检查' : '日常检查'}_${timestamp}.csv`;
+    
+    // 下载文件
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = fileName;
+    link.click();
+    window.URL.revokeObjectURL(url);
+}
+
 // 重置计划
 function resetPlans() {
     document.getElementById('generatedPlans').style.display = 'none';
@@ -252,6 +394,15 @@ function resetPlans() {
     if (plansList) {
         plansList.innerHTML = '';
     }
+    
+    // 清理可能存在的标签下拉组件选中状态
+    // 查找所有以 planOrgUnit 和 planBasicUnits 开头的组件并清空
+    const componentIds = Object.keys(tagsDropdownManager.components || {});
+    componentIds.forEach(id => {
+        if (id.startsWith('planOrgUnit') || id.startsWith('planBasicUnits')) {
+            tagsDropdownManager.clearSelectedTags(id);
+        }
+    });
 }
 
 // 初始化制定计划页面的标签下拉组件
@@ -260,7 +411,7 @@ function initializePlanTagsComponents(rounds, checkType) {
     const basicUnits = planManagementData.tags.basicUnits;
     
     for (let i = 1; i <= rounds; i++) {
-        // 初始化机关单位标签组件
+        // 初始化机关标签组件
         const orgUnitContainer = document.querySelector(`.plan-org-unit-container[data-round="${i}"]`);
         if (orgUnitContainer) {
             try {
@@ -268,7 +419,11 @@ function initializePlanTagsComponents(rounds, checkType) {
                     id: `planOrgUnit${i}`,
                     container: orgUnitContainer,
                     options: orgUnits,
-                    selectedTags: [orgUnits[(i - 1) % orgUnits.length]]
+                    selectedTags: [orgUnits[(i - 1) % orgUnits.length]],
+                    placeholder: '请选择机关',
+                    selectedText: '已选择 {count} 个机关',
+                    previewLabel: '已选机关:',
+                    helpText: '点击选择机关，支持自定义机关'
                 });
                 
                 // 立即更新组件显示状态
@@ -277,11 +432,11 @@ function initializePlanTagsComponents(rounds, checkType) {
                     updateDropdownItemColors(`planOrgUnit${i}`);
                 }, 50);
             } catch (error) {
-                console.error(`机关单位组件 ${i} 初始化失败:`, error);
+                console.error(`机关组件 ${i} 初始化失败:`, error);
             }
         }
         
-        // 初始化基层单位标签组件
+        // 初始化基层标签组件
         const basicUnitsContainer = document.querySelector(`.plan-basic-units-container[data-round="${i}"]`);
         if (basicUnitsContainer) {
             const selectedBasicUnits = basicUnits.slice((i - 1) * 5 % basicUnits.length, ((i - 1) * 5 % basicUnits.length) + 5);
@@ -294,7 +449,11 @@ function initializePlanTagsComponents(rounds, checkType) {
                     id: `planBasicUnits${i}`,
                     container: basicUnitsContainer,
                     options: basicUnits,
-                    selectedTags: selectedBasicUnits
+                    selectedTags: selectedBasicUnits,
+                    placeholder: '请选择基层',
+                    selectedText: '已选择 {count} 个基层',
+                    previewLabel: '已选基层:',
+                    helpText: '点击选择基层，支持自定义基层'
                 });
                 
                 // 立即更新组件显示状态
@@ -303,7 +462,7 @@ function initializePlanTagsComponents(rounds, checkType) {
                     updateDropdownItemColors(`planBasicUnits${i}`);
                 }, 50);
             } catch (error) {
-                console.error(`基层单位组件 ${i} 初始化失败:`, error);
+                console.error(`基层组件 ${i} 初始化失败:`, error);
             }
         }
     }
